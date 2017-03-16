@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Close Pixelate</title>
+
+  <!-- IE HTML5 Shiv -->
+  <!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <style media="screen">
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      background: #111;
+      overflow-x: hidden;
+      color: #DDD;
+      line-height: 1.3em;
+    }
+
+    #content {
+      width: 960px;
+      margin: 20px auto;
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 54px;
+      line-height: 1.1em;
+      margin: 0 0 0.5em;
+    }
+
+    .copy {
+      width: 620px;
+      margin: 0 auto 40px;
+      border-bottom: 1px solid #666;
+    }
+
+    .examples {
+      text-align: center;
+    }
+
+    #portraits-wrap {
+      width: 960px;
+      margin: 0 auto;
+    }
+
+    #portraits {
+      position: relative;
+      width: 1600px;
+      left: -320px;
+    }
+
+    a { color: #E58;  text-decoration: none; }
+    a:hover { color: #58E; }
+    a:active { color: #F93; }
+
+    article {
+      display: block;
+      margin-bottom: 6.0em;
+    }
+
+    figure { display: block; }
+
+    figcaption {
+      display: block;
+      text-align: center;
+      margin-bottom: 1.0em;
+      font-size: 14px;
+    }
+
+    article pre {
+      width: 600px;
+      padding: 1.0em;
+      margin: 0 auto;
+      border: 1px solid #222;
+    }
+
+    pre {
+      padding: 10px;
+    }
+
+    code { padding: 2px; }
+
+    pre code { padding: 0; }
+
+    pre, code {
+      font-family: Monaco, monospace;
+      font-size: 12px;
+      background: #222;
+    }
+
+    .portrait {
+      background-color: black;
+      display: block;
+      margin: 0 auto 1.0em;
+    }
+
+    a.button {
+      background-color: #E58;
+      color: white;
+      padding: 0.4em 10px;
+      border-radius: 0.9em;
+      background-image: -webkit-linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      background-image:    -moz-linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      background-image:     -ms-linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      background-image:      -o-linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      background-image:         linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      box-shadow: 0 2px 4px hsla( 0, 0%, 0%, 0.4 );
+    }
+
+    a.button:hover {
+      background-color: #58E;
+    }
+
+    a.button:active {
+      background-color: #36C;
+      box-shadow: inset 0 2px 10px hsla( 0, 0%, 0%, 0.7 );
+    }
+
+  </style>
+
+
+
+</head>
+<body>
+
+  <div id="content">
+
+    <h1>Close Pixelate</h1>
+
+    <div class="examples">
+      <img src="img/stanley-small.jpg" />
+      <img id="example2" src="img/stanley-small.jpg" />
+      <img id="example3" src="img/stanley-small.jpg" />
+    </div>
+
+    <div class="copy">
+
+      <p>Inspired by American portrait painter Chuck Close, this script converts an image into a pixelated version using an HTML5 canvas element. It&rsquo;s basically a simple demo for canvas&rsquo; <a href="https://developer.mozilla.org/En/HTML/Canvas/Pixel_manipulation_with_canvas">imageData</a> functionality. </p>
+
+      <p>
+        <a class="button" href="http://github.com/desandro/close-pixelate">Close Pixelate on GitHub</a>
+        <a class="button" href="http://github.com/desandro/close-pixelate/#readme">Read docs</a>
+        <a class="button" href="close-pixelate.js">Download close-pixelate.js</a>
+      </p>
+
+      <h2>Contributors</h2>
+
+      <ul>
+      <li><a href="http://desandro.com">David DeSandro</a></li>
+      <li><a href="http://twitter.com/jfsiii">John Schulz</a></li>
+      </ul>
+
+      <h2>The Pixelator</h2>
+
+      <p><a href="https://twitter.com/vancouverben">Ben Keen</a> took this script and built a whole UI around it, creating <a href="http://thepixelator.com">The Pixelator</a>. It&rsquo;s the easiest way to take it for a spin.</p>
+
+      <p><a href="http://thepixelator.com"><img src="img/the-pixelator.jpg" alt="The Pixelator by Ben Keen" /></a></p>
+
+      <h2>Demos</h2>
+
+      <ul>
+        <li><a href="dolly.html">Change pixel resolution on Dolly</li>
+      </ul>
+
+    </div> <!-- .copy -->
+
+  </div> <!-- #content -->
+
+  <div id="portraits-wrap">
+
+    <div id="portraits">
+
+      <article>
+        <figure>
+          <img id="officer" class="portrait" src="img/officer.jpg" alt="Chinese officer @ Shanghai downtown market by Dusan Simonovic" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/madciapka/4521134773/"><em>Chinese officer @ Shanghai downtown market</em> by Dusan Simonovic</a></figcaption>
+        </figure>
+        <pre><code>{ shape : 'diamond', resolution : 48, size: 50 },
+{ shape : 'diamond', resolution : 48, offset : 24 },
+{ shape : 'circle', resolution : 8, size: 6 }</code></pre>
+      </article>
+
+      <article>
+        <figure>
+          <img id="stanley" class="portrait" src="img/stanley.jpg" alt="$2 Portrait Project: Stanley by Troy Holden" />
+          <figcaption>Original photo: <em>$2 Portrait Project: Stanley</em> by Troy Holden</figcaption>
+        </figure>
+        <pre><code>{ resolution: 32 },
+{ shape : 'circle', resolution : 32, offset: 15 },
+{ shape : 'circle', resolution : 32, size: 26, offset: 13 },
+{ shape : 'circle', resolution : 32, size: 18, offset: 10 },
+{ shape : 'circle', resolution : 32, size: 12, offset: 8 }</code></pre>
+
+      </article>
+
+      <article>
+        <figure>
+          <img id="take-my-portrait" class="portrait" src="img/take-my-portrait.jpg" alt="Take My Portrait by Hamed Saber" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/hamed/590034637/"><em>Take My Portrait</em> by Hamed Saber</a></figcaption>
+        </figure>
+        <pre><code>{ resolution: 48 },
+{ shape: 'diamond', resolution: 48, offset: 12, alpha: 0.5  },
+{ shape: 'diamond', resolution: 48, offset: 36, alpha: 0.5  },
+{ shape: 'circle', resolution: 16, size: 8, offset: 4, alpha: 0.5 }</code></pre>
+
+      </article>
+
+      <article>
+        <figure>
+          <img id="tony" class="portrait" src="img/tony.jpg" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/jon-luke/4512534558/"><em>Tony deep in thought (B&amp;W)</em> by Jon-Luke</a></figcaption>
+        </figure>
+        <pre><code>{ shape: 'circle', resolution: 32, size: 6, offset: 8 },
+{ shape: 'circle', resolution: 32, size: 9, offset: 16 },
+{ shape: 'circle', resolution: 32, size: 12, offset: 24 },
+{ shape: 'circle', resolution: 32, size: 9, offset: 0 }</code></pre>
+      </article>
+
+      <article>
+        <figure>
+          <img id="wonder" class="portrait" src="img/wonder.jpg" alt="Wonder by Kyrill Poole" />
+          <figcaption>Original photo: <em>Wonder</em> by <a href="http://www.flickr.com/photos/poolski/">Kyrill Poole</a></figcaption>
+        </figure>
+        <pre><code>{ shape: 'diamond', resolution: 24, size: 25 },
+{ shape: 'diamond', resolution: 24, offset: 12 },
+{ resolution: 24, alpha: 0.5 }</code></pre>
+
+      </article>
+
+      <article>
+        <figure>
+          <img id="anita" class="portrait" src="img/anita.jpg" alt="anita shlosse 04 c studio.es by Vincent Boiteau" />
+          <figcaption>Original photo: <em>anita shlosse 04 &copy; studio.es</em> by <a href="http://www.flickr.com/photos/2dogs_productions">Vincent Boiteau</a></figcaption>
+        </figure>
+        <pre><code>{ shape: 'square', resolution: 32 },
+{ shape: 'circle', resolution: 32, offset: 16 },
+{ shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
+{ shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }</code></pre>
+      </article>
+
+      <article>
+        <figure>
+          <img id="giraffe" class="portrait" src="img/giraffe.jpg" alt="Giraffe Portrait - Woburn Safari Park - Monday August 27th 2007 by Keven Law" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/kevenlaw/1300905195/"><em>Giraffe Portrait - Woburn Safari Park - Monday August 27th 2007</em> by Keven Law</a></figcaption>
+        </figure>
+        <pre><code>{ shape : 'circle', resolution : 24 },
+{ shape : 'circle', resolution : 24, size: 9, offset: 12 }</code></pre>
+      </article>
+
+      <article>
+        <figure>
+          <img id="kendra" class="portrait" src="img/kendra.jpg" alt="Kendra by Anna Kreslavskaya" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/kreslava/4518179955/"><em>Kendra</em> by Anna Kreslavskaya</a></figcaption>
+        </figure>
+        <pre><code>{ shape : 'square', resolution : 48, offset: 24 },
+{ shape : 'circle', resolution : 48, offset : 0 },
+{ shape : 'diamond', resolution : 16, size: 15, offset : 0, alpha : 0.6 },
+{ shape : 'diamond', resolution : 16, size: 15, offset : 8, alpha : 0.6 }</code></pre>
+      </article>
+
+      <article>
+        <figure>
+          <img id="gavin" class="remote portrait" src="img/gavin.jpg" alt="Portrait Of A Mayor by Troy Holden" />
+          <figcaption>Original photo: <em>Portrait Of A Mayor</em> by Troy Holden</figcaption>
+        </figure>
+        <pre><code>{ shape : 'square', resolution : 48 },
+{ shape : 'diamond', resolution : 12, size: 8 },
+{ shape : 'diamond', resolution : 12, size: 8, offset : 6 }</code></pre>
+      </article>
+
+    </div> <!-- #portraits -->
+
+  </div> <!-- #portraits-wrap -->
+
+  <script src="close-pixelate.js"></script>
+  <script>
+    var pixelations = {
+      'officer' : [
+        { shape : 'diamond', resolution : 48, size: 50 },
+        { shape : 'diamond', resolution : 48, offset : 24 },
+        { shape : 'circle', resolution : 8, size: 6 }
+      ],
+      'stanley' : [
+        { resolution: 32 },
+        { shape : 'circle', resolution : 32, offset: 15 },
+        { shape : 'circle', resolution : 32, size: 26, offset: 13 },
+        { shape : 'circle', resolution : 32, size: 18, offset: 10 },
+        { shape : 'circle', resolution : 32, size: 12, offset: 8 }
+      ],
+      'take-my-portrait' : [
+        { resolution: 48 },
+        { shape: 'diamond', resolution: 48, offset: 12, alpha: 0.5  },
+        { shape: 'diamond', resolution: 48, offset: 36, alpha: 0.5  },
+        { shape: 'circle', resolution: 16, size: 8, offset: 4, alpha: 0.5 }
+      ],
+      'tony' : [
+        { shape: 'circle', resolution: 32, size: 6, offset: 8 },
+        { shape: 'circle', resolution: 32, size: 9, offset: 16 },
+        { shape: 'circle', resolution: 32, size: 12, offset: 24 },
+        { shape: 'circle', resolution: 32, size: 9, offset: 0 }
+      ],
+      'wonder' : [
+        { shape: 'diamond', resolution: 24, size: 25 },
+        { shape: 'diamond', resolution: 24, offset: 12 },
+        { resolution: 24, alpha: 0.5 }
+      ],
+      'anita' : [
+        { shape: 'square', resolution: 32 },
+        { shape: 'circle', resolution: 32, offset: 16 },
+        { shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
+        { shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }
+      ],
+      'giraffe' : [
+        { shape : 'circle', resolution : 24 },
+        { shape : 'circle', resolution : 24, size: 9, offset: 12 }
+      ],
+      'kendra' : [
+        { shape : 'square', resolution : 48, offset: 24 },
+        { shape : 'circle', resolution : 48, offset : 0 },
+        { shape : 'diamond', resolution : 16, size: 15, offset : 0, alpha : 0.6 },
+        { shape : 'diamond', resolution : 16, size: 15, offset : 8, alpha : 0.6 }
+      ],
+      'gavin' : [
+        { shape : 'square', resolution : 48 },
+        { shape : 'diamond', resolution : 12, size: 8 },
+        { shape : 'diamond', resolution : 12, size: 8, offset : 6 },
+      ]
+    };
+
+
+    function init() {
+
+      document.getElementById('example2').closePixelate( [
+        { resolution: 24 }
+      ] );
+
+      document.getElementById('example3').closePixelate( [
+        { resolution: 24 },
+        { shape : 'circle', resolution : 24, size: 16, offset: 12, alpha: 0.5 }
+      ] );
+
+      for ( var key in pixelations ) {
+        var img = document.getElementById( key ),
+            options = pixelations[key];
+        if ( img ) { 
+          img.closePixelate( options )
+          // new ClosePixelation( img, options )
+        }
+      }
+    }
+
+
+    window.addEventListener( 'load', init, false);
+  </script>
+
+</body>
+</html>
