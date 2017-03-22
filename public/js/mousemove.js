@@ -26,21 +26,6 @@ $(document).ready(function() {
     // 		});
     // 	});
 
-    $('#eye-hover').on('mouseenter', function() {
-        // $('#look').css({'font-size': '26px', 'margin-left': '-20px'});
-        $('#eye-circle').css({'transform': 'scale(1.2)'});
-        let clink = new Audio('../audio/clink1.mp3');
-        clink.volume = .25;
-        clink.play();
-    });
-    $('#eye-hover').on('mouseleave', function() {
-        // $('#look').css({'font-size': '16px', 'margin-left': '-8px'});
-        $('#eye-circle').css({'transform': 'scale(1.0)'});
-        let clink = new Audio('../audio/clink1.mp3');
-        clink.volume = .25;
-        clink.play();
-    });
-
     let ambAudio = document.getElementById('ambient-audio');
     ambAudio.volume = .75;
 
@@ -147,7 +132,6 @@ $(document).ready(function() {
                 decrement = decrement * 1.005;
             }
             damp = damp - decrement;
-            console.log(damp);
             if (damp < 1650) {
                 stopInt();
             }
@@ -158,10 +142,10 @@ $(document).ready(function() {
         }
     }
 
-    damp = 1650;
+    // damp = 1650;
 //******** UNCOMMENT THIS TIMOUT AND COMMENT THE PREVIOUS damp = 1650; AFTER DONE TESTING
 
-    // setTimeout(() => {
+    setTimeout(() => {
         $gal.mousemove(function(e) {
 
             mX = e.pageX - $(this).parent().offset().left - this.offsetLeft;
@@ -182,7 +166,7 @@ $(document).ready(function() {
         });
 
         initDamp();
-    // }, 1000);
+    }, 1000);
 
 
 
@@ -297,14 +281,16 @@ $(document).ready(function() {
                     average = average - 1.1;
                     $(elem).css({'opacity': average});
                     break;
-                case ('#img2'):
-                    average = average - .3 -initAverage;
-                    $(elem).css({'opacity': average});
-                    // average = average * .25 + 1.06;
-                    // average < 1 ? average = 1 : average;
-                    // average > 1.35 ? average = 1.35 : average;
-                    // $('#eye-circle').css({'transform': 'scale(' + average + ')'});
-                    break;
+                // case ('#img2'):
+                //     // average = average * 1.25 - .7 -initAverage;
+                //     average = average - .3 -initAverage;
+                //     // console.log(average);
+                //     $(elem).css({'opacity': average});
+                //     // average = average * .25 + 1.06;
+                //     // average < 1 ? average = 1 : average;
+                //     // average > 1.35 ? average = 1.35 : average;
+                //     // $('#eye-circle').css({'transform': 'scale(' + average + ')'});
+                //     break;
                 case ('#chaneysegura'):
                     let cutAv;
                     average = average + .3;
@@ -339,7 +325,7 @@ $(document).ready(function() {
         }
 
         if (initDecay2) {
-            colorHover('#img2', 920, 655);
+            // colorHover('#img2', 920, 655);
         }
         // colorHover('#img6', 1175, 300);
         colorHover('#chaneysegura', 850, 1300);
@@ -464,7 +450,6 @@ $(document).ready(function() {
             request.responseType = 'arraybuffer';
 
             request.onload = function () { //Async method
-                    console.log(request.response);
                     context.decodeAudioData(this.response, function(buffer) {    //Async method
                         if (!buffer) {
                             alert('error decoding file data: ');
@@ -472,8 +457,7 @@ $(document).ready(function() {
                         }
 
                         playListBuffer.push(buffer);                                //Decode audio and put inside playListBuffer
-                        if (list.length==playListBuffer.length){
-                            console.log(playListBuffer);                            //When All files have been decoded show an Array in console
+                        if (list.length==playListBuffer.length){                           //When All files have been decoded show an Array in console
                             prepare(gainArr);
                         }
                                                                             },  function(e) { console.log('Error decoding audio file', e)});
@@ -491,7 +475,6 @@ $(document).ready(function() {
     function prepare(gArray){
         for (var i=0; i<playListBuffer.length; i++){
             var source = context.createBufferSource();              // creates a sound source
-            console.log(playListBuffer[i]);
             source.buffer = playListBuffer[i];
             gArray[i] = context.createGain();
             gArray[i].gain.value = 0;

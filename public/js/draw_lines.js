@@ -14,15 +14,28 @@ let complete2 = false;
 let complete3 = false;
 let holdX;
 let holdY;
-let audio;
 let isToggled = false;
-
 let enter1 = false;
 let enter2 = false;
+let onHover = false;
+let audio = new Audio('../audio/beep.mp3');
+audio.volume = .10;
+
 
 tattooCtx.strokeStyle = "white";
 tattooCtx.lineWidth = 3;
 
+$('#eye-hover').on('mouseenter', () => {
+    $('#eye-circle').css({'transform': 'scale(1.2)'});
+    $('#img2').css({'opacity': '1'});
+});
+
+$('#eye-hover').on('mouseleave', () => {
+    if (!isHover){
+        $('#img2').css({'opacity': '0'});
+    }
+    $('#eye-circle').css({'transform': 'scale(1.0)'});
+});
 
 $(document).mousedown(function (e) {
     handleMouseDown(e);
@@ -36,17 +49,13 @@ $(document).mouseup(function (e) {
 $(document).mouseout(function (e) {
     handleMouseOut(e);
 });
-// $("#clear").click(function () {
-//     storedLines.length = 0;
-//     redrawStoredLines();
-// });
+
 $(document).on('keypress', function(e) {
     e.preventDefault();
     if (e.which === 122) {
         isToggled = !isToggled;
         storedLines.length = 0;
         redrawStoredLines();
-
     }
 });
 
@@ -85,16 +94,11 @@ function handleMouseDown(e) {
             startX = iX;
             startY = iY;
         }
-
 }
 
 function handleMouseMove(e) {
     e.preventDefault();
     e.stopPropagation();
-
-    // if (complete) {
-    //     return;
-    // }
 
     let tempX = e.pageX;
     let tempY = e.pageY;
@@ -112,6 +116,12 @@ function handleMouseMove(e) {
 
     if ((!complete1 || !complete2 || !complete3) && iX > 900 && iX < 950 && iY > 630 && iY < 670) {
         isHover = true;
+        if (!onHover) {
+            audio.play()
+        }
+        onHover = true;
+    } else {
+        onHover = false;
     }
 
     if (isHover) {
@@ -170,6 +180,7 @@ function handleMouseMove(e) {
             y2: 696
         });
         isHover = false;
+        $('#img2').css({'opacity': '0'});
         redrawStoredLines();
         let mouthSphere = $('<div id="mouth-sphere"></div>').appendTo('#img-contain');
         complete1 = true;
@@ -184,8 +195,6 @@ function handleMouseMove(e) {
                 'margin-top': '900px'
             });
 
-            audio = new Audio('../audio/beep.mp3');
-            audio.volume = .25;
             audio.play();
 
             tattooCtx.strokeStyle = "white";
@@ -207,13 +216,9 @@ function handleMouseMove(e) {
                 });
                 xA = xA + 1.2;
                 yA++;
-                // isHover = false;
                 redrawStoredLines();
             }, 5)
-
-
         },1);
-
     }
 
     //connect ear
@@ -226,8 +231,8 @@ function handleMouseMove(e) {
             y2: 680
         });
         isHover = false;
+        $('#img2').css({'opacity': '0'});
         redrawStoredLines();
-        console.log('create');
         let mouthSphere = $('<div id="ear-drop"></div>').appendTo('#img-contain');
         complete2 = true;
         enter1 = false;
@@ -241,8 +246,6 @@ function handleMouseMove(e) {
                 'margin-top': '940px'
             });
 
-            audio = new Audio('../audio/beep.mp3');
-            audio.volume = .25;
             audio.play();
 
             tattooCtx.strokeStyle = "white";
@@ -264,11 +267,9 @@ function handleMouseMove(e) {
                 });
                 xA = xA + 1.2;
                 yA++;
-                // isHover = false;
                 redrawStoredLines();
             }, 3)
         },1);
-
     }
 
     //connect head
@@ -281,14 +282,15 @@ function handleMouseMove(e) {
             y2: 440
         });
         isHover = false;
+        $('#img2').css({'opacity': '0'});
         redrawStoredLines();
         complete3 = true;
         enter1 = false;
         enter2 = false;
         setTimeout(()=>{
-            audio = new Audio('../audio/beep.mp3');
-            audio.volume = .25;
+
             audio.play();
+
             $('#z').css({
                 'transition': 'all .5s ease',
                 'opacity': '0'
@@ -298,6 +300,7 @@ function handleMouseMove(e) {
                 'margin-top': '0px',
                 'background': 'url(../images/headimg.png)'
             });
+
             setTimeout(()=>{
                 $('#z').css({
                     'opacity': '1',
@@ -327,17 +330,12 @@ function handleMouseMove(e) {
         startX = iX;
         startY = iY;
     }
-
-
-
 }
 
 
 function handleMouseUp(e) {
     e.preventDefault();
     e.stopPropagation();
-
-
 
     let tempX = e.pageX;
     let tempY = e.pageY;
@@ -361,56 +359,14 @@ function handleMouseUp(e) {
             x2: iX,
             y2: iY
         });
-    } else  {
-
-        // redrawStoredLines();
-        // // draw the current line
-        // tattooCtx.beginPath();
-        // tattooCtx.moveTo(startX, startY);
-        // tattooCtx.lineTo(iX, iY);
-        // tattooCtx.stroke();
-
-        // storedLines.push({
-        //     x1: startX,
-        //     y1: startY,
-        //     x2: iX,
-        //     y2: iY
-        // });
-        //
-        // let holdX2 = holdX;
-        // let holdY2 = holdY;
-        // let stopX2 = stopX;
-        // let stopY2 = stopY;
-        //
-        // // console.log(holdY, stopY);
-        // isDown = false;
-        // isHover = false;
-        // let followMouse = setInterval(()=>{
-        //     console.log(holdX2, holdY2);
-        //     // redrawStoredLines();
-        //     if (holdX2 > 0 && holdY2 > 0) {
-        //         storedLines = [];
-        //         storedLines.push({
-        //             x1: holdX2,
-        //             y1: holdY2,
-        //             x2: stopX2,
-        //             y2: stopY2
-        //         });
-        //         redrawStoredLines();
-        //         holdX2 = holdX2 + (stopX2/holdX2) ;
-        //         holdY2 = holdX2 + (stopY2/holdY2);
-        //     } else {
-        //         return;
-        //     }
-        // }, 5);
     }
+
     enter1 = false;
     enter2 = false;
     redrawStoredLines();
 
     isDown = false;
     isHover = false;
-
 }
 
 function handleMouseOut(e) {
@@ -429,9 +385,7 @@ function handleMouseOut(e) {
     let iY = scrollY + tempY;
 
     redrawStoredLines();
-
 }
-
 
 function redrawStoredLines() {
 
