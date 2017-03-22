@@ -1,6 +1,7 @@
 html {
     // cursor: url('../images/buttonmouse5.png'), default;
     // -webkit-user-select: none;
+    // font-family: 'Bungee Hairline', cursive;
 }
 * {
     cursor: url('../images/buttonmouse5.png'), default;
@@ -187,7 +188,7 @@ canvas {
 }
 
 .semi-trans {
-    background-color: rgba(0, 0, 0, .2) !important;
+    // background-color: rgba(0, 0, 0, .2) !important;
 }
 
 .blooming-menu__main {
@@ -415,11 +416,24 @@ th, td {
     background-color: transparent;
     border: 5px solid white;
     pointer-events: none;
-    margin-left: 490px;
-    margin-top: 640px;
+    margin-left: 850px;
+    margin-top: 600px;
+    opacity: 0;
     z-index: 1000000;
+    transition: all 1s ease;
 }
-
+#near-sight-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: rgba(255, 255, 255, 1);
+    font-size: 20px;
+    margin-left: 18px;
+    margin-top: 40px;
+    opacity: 0;
+    transition: all .5s ease;
+    font-family: 'Orbitron', sans-serif;
+}
 #mouth-sphere {
     position: absolute;
     top: 0;
@@ -436,12 +450,29 @@ th, td {
     transition: all 1s ease;
 }
 
+#ear-drop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 3px solid white;
+    pointer-events: none;
+    margin-left: 1345px;
+    margin-top: 680px;
+    z-index: 1000000;
+    transition: all 1s ease;
+}
+
 #img2 {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 100;
     opacity: 0;
+    transition: all 1s ease;
 }
 #img3 {
     position: absolute;
@@ -470,6 +501,8 @@ th, td {
     left: 0;
     z-index: 100;
     opacity: 0;
+    transition: all 1s ease;
+    filter: brightness(1.5);
 }
 #earglow {
     position: absolute;
@@ -492,37 +525,128 @@ th, td {
     z-index: 100;
     opacity: 0;
 }
+
+#chaneysegura {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    opacity: 0;
+    transition: all 5s ease;
+}
 #eye-circle {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1000000;
-    opacity: 0;
-    margin-left: 920px;
-    margin-top: 635px;
-    border: 3px solid white;
+    z-index: 100000000;
+    opacity: 1;
+    // margin-left: 920px;
+    // margin-top: 635px;
+    margin-left: 87px;
+    margin-top: 84.5px;
+    border: 2px solid white;
     border-radius: 50%;
     width: 30px;
     height: 30px;
     transition: all .5s ease;
+    font-family: 'Bungee Hairline', cursive;
 
+}
+#eye-hover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-left: 835px;
+    margin-top: 550px;
+    // margin-left: -88px;
+    // margin-top: -86px;
+    // border: 3px solid white;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    opacity: 1;
+    transition: all .5s ease;
+    z-index: 100000001;
+}
+#look {
+    margin-top: 35px;
+    margin-left: -8px;
+    color: white;
+    transition: all .5s ease;
+    opacity: 1;
 }
 #ear-circle {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 100000000;
-    opacity: 1;
-    // background-color: black;
-    margin-left: 1315px;
-    margin-top: 650px;
-    border: 1px solid black;
+    opacity: 0;
+    // margin-left: 1315px;
+    // margin-top: 650px;
+    margin-left: 830px;
+    margin-top: 600px;
+    border: 2px solid white;
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    transition: all .5s ease;
-
+    transition: all .9s ease;
 }
+
+#hear {
+    opacity: 0;
+    margin-top: 22px;
+    margin-left: 65px;
+    color: white;
+    // transition: opacity .5s ease;
+    transition: font-size 1.5s ease, opacity .5s ease;
+    font-family: 'Bungee Hairline', cursive;
+}
+
+#head-circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100000000;
+    opacity: 0;
+    // margin-left: 1315px;
+    // margin-top: 650px;
+    margin-left: 830px;
+    margin-top: 600px;
+    border: 1px solid white;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    background: none;
+    transition: all .9s ease;
+}
+
+#z {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    opacity: 1;
+    font-size: 36px;
+    margin-top: 30px;
+    margin-left: 38px;
+    // border: 1px solid white;
+    color: white;
+    transition: all .5s ease;
+    font-family: 'Bungee Hairline', cursive;
+}
+
+// .element {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     z-index: 1000000000;
+//     opacity: 1;
+//     color: white;
+//     font-size: 36px;
+//     // background-color: black;
+//     margin-left: 600px;
+//     margin-top: 1100px;
+//
+// }
 #tattooCanvas {
     position: absolute;
     top: 0;
@@ -702,8 +826,10 @@ span{
 .blooming-menu__item-btn-wrapper {
 
     background-color: transparent !important;
-    border: 1px solid white;
+    border: 1px solid white !important;
 }
+
+
 
 .o {
     // float: left;

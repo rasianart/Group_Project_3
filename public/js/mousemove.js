@@ -3,6 +3,15 @@ $(document).ready(function() {
     let coordHolder = [];
     let activate = false;
     let toggle = false;
+    let scrollTransition = false;
+    let bloomToggle = false;
+    let isHover = false;
+
+    $('#chaneysegura').css({'opacity': '.6'});
+    setTimeout(() => {
+        $('#chaneysegura').css({'transition': 'all .1s ease'});
+    }, 1500);
+
 
     $("img.lazy").lazyload({
         threshold: 700,
@@ -10,16 +19,31 @@ $(document).ready(function() {
         event: "mouseover"
     });
 
-    $('#eye-circle').on('mouseenter', function() {
-        // console.log('hey');
-        $(this).css({'transform': 'scale(1.5)'});
-    })
-    $('#eye-circle').on('mouseleave', function() {
-        console.log('hey');
-        $(this).css({'transform': 'scale(1.0)'});
-    })
+    // $(function(){
+    // 		$(".element").typed({
+    // 			strings: ["It is important to take your medicine every day as prescribed.", "You will receive advice about ways to help you take it regularly so that it has the best chance to help you avoid infection.", "Tell your provider if you are having trouble remembering to take your medicine or if you want to stop medication."],
+    // 			typeSpeed: 0
+    // 		});
+    // 	});
+
+    $('#eye-hover').on('mouseenter', function() {
+        // $('#look').css({'font-size': '26px', 'margin-left': '-20px'});
+        $('#eye-circle').css({'transform': 'scale(1.2)'});
+        let clink = new Audio('../audio/clink1.mp3');
+        clink.volume = .25;
+        clink.play();
+    });
+    $('#eye-hover').on('mouseleave', function() {
+        // $('#look').css({'font-size': '16px', 'margin-left': '-8px'});
+        $('#eye-circle').css({'transform': 'scale(1.0)'});
+        let clink = new Audio('../audio/clink1.mp3');
+        clink.volume = .25;
+        clink.play();
+    });
 
     let ambAudio = document.getElementById('ambient-audio');
+    ambAudio.volume = .75;
+
     $('#ear-circle').on('mouseenter', () => {
         console.log('hey');
         ambAudio.muted = true;
@@ -88,60 +112,94 @@ $(document).ready(function() {
         galSH = $gal[0].scrollHeight * 2,
         wDiff = (galSW / galW) - 1,
         hDiff = (galSH / galH) - 1, // widths difference ratio
-        mPadd = 60, // Mousemove Padding
+        // mPadd = 60, // Mousemove Padding
         mPadd = 0, // Mousemove Padding
-        damp = 3500, // Mousemove response softness
+        damp = 13500, // Mousemove response softness
         dampX = 0,
         dampY = 0,
         mX = 0,
         mY = 0, // Real mouse position
         mX2 = 0,
         mY2 = 0, // Modified mouse position
-        posX = 27,
+        posX = 26.75,
         posY = 231,
         mmAA = galW - (mPadd * 2),
         mmAAH = galH - (mPadd * 2), // The mousemove available area
         mmAAr = (galW / mmAA);
-    mmAArH = (galH / mmAAH); // get available mousemove fidderence ratio
+        mmAArH = (galH / mmAAH); // get available mousemove fidderence ratio
 
     var container = document.getElementById('img-contain');
     container.scrollTop = 800;
     container.scrollLeft = 400;
 
 
-    let initWait = setInterval(function() {
-        damp--;
-        if (damp < 1650) {
-            stopInt();
-        }
-    }, 10);
+    const initDamp = () => {
+        let decrement = 2;
+        let initWait = setInterval(function() {
 
-    let stopInt = () => {
-        clearInterval(initWait);
+            if (damp >= 13450) {
+                decrement = decrement * 1.01;
+            }
+            else if (damp < 13450 && damp > 12500) {
+                decrement = decrement * 1.025;
+            }
+            else if (damp < 12500 && damp >11500) {
+                decrement = decrement * 1.005;
+            }
+            damp = damp - decrement;
+            console.log(damp);
+            if (damp < 1650) {
+                stopInt();
+            }
+        }, 10);
+
+        let stopInt = () => {
+            clearInterval(initWait);
+        }
     }
 
-    $gal.mousemove(function(e) {
+    damp = 1650;
+//******** UNCOMMENT THIS TIMOUT AND COMMENT THE PREVIOUS damp = 1650; AFTER DONE TESTING
 
-        mX = e.pageX - $(this).parent().offset().left - this.offsetLeft;
-        mX2 = Math.min(Math.max(0, mX - mPadd), mmAA) * mmAAr;
-        mY = e.pageY - $(this).parent().offset().top - this.offsetTop;
-        mY2 = Math.min(Math.max(0, mY - mPadd), mmAAH) * mmAArH;
+    // setTimeout(() => {
+        $gal.mousemove(function(e) {
 
-        let opacAmount = e.pageX * -.001 + .8;
-        $('.abs').css({
-            'opacity': opacAmount*2
+            mX = e.pageX - $(this).parent().offset().left - this.offsetLeft;
+            mX2 = Math.min(Math.max(0, mX - mPadd), mmAA) * mmAAr;
+            mY = e.pageY - $(this).parent().offset().top - this.offsetTop;
+            mY2 = Math.min(Math.max(0, mY - mPadd), mmAAH) * mmAArH;
+
+            let opacAmount = e.pageX * -.001 + .8;
+            $('.abs').css({
+                'opacity': opacAmount*2
+            });
+            let opacAmount2 = (e.pageX) * .0015 - 1;
+            $('.absR').css({
+                'opacity': opacAmount2*2.5
+            });
+
+            activate = true;
         });
-        let opacAmount2 = (e.pageX) * .0015 - 1;
-        $('.absR').css({
-            'opacity': opacAmount2*2.5
-        });
 
-        activate = true;
+        initDamp();
+    // }, 1000);
 
-    });
+
+
+    // setTimeout(() => {
+    //     $('#img-contain').animate({
+    //         scrollTop: 700,
+    //         scrollLeft: 400
+    //     }, 2000, function() {
+    //         posX = container.scrollLeft/ 15;
+    //         posY = container.scrollTop/ 3.45;
+    //         initDamp();
+    //     });
+    // }, 1200);
+
 
     setInterval(function() {
-        if (activate) {
+        if (activate && !scrollTransition) {
 
             posX += (mX2 - posX - 550) / damp; // zeno's paradox equation "catching delay"
             $gal.scrollLeft((posX * wDiff));
@@ -164,10 +222,13 @@ $(document).ready(function() {
     }, 1000);
 
     let c = 0;
-    // var elementCanvas = document.getElementById('tatoo');
-    // var tattooCtx = elementCanvas.getContext('2d');
-    // var isDrawing = false;
+    let initDecay = false;
+    let initDecay2 = false;
+    let initAverage = .5;
 
+    setTimeout(() => {
+        initDecay2 = true;
+    }, 2000);
 
     $(document).on('mousemove', function clickFunc(e) {
 
@@ -179,6 +240,11 @@ $(document).ready(function() {
         let iY = scrollY + tempY - 40;
         var imgX = Math.ceil(iX / 25) * 25;
         var imgY = Math.ceil(iY / 25) * 25;
+        if (iX + 40 > 900 && iX + 40 < 950 && iY + 40 > 630 && iY + 40< 670) {
+            setTimeout(()=>{
+                isHover = true;
+            }, 1500);
+        }
 
         if (mousedown === true) {
 
@@ -221,41 +287,70 @@ $(document).ready(function() {
             let diffY = Math.abs(Math.abs(y - i2Y));
             let average = Math.sqrt(((diffX / 2 + diffY / 2) ));
             average = (-average * .01 + .15) * 10 + .3;
-            // console.log(average);
+            // console.log(i2X, i2Y);
             if (y === 0) {
                 diffX = (-diffX * .01 + .15) * .1 + 1;
-                // console.log(diffX);
                 $(elem).css({'opacity': diffX});
-            } else if (elem === '#earglow' || elem === '#earglow2' || elem === '#earglow3') {
-                average = average - 1.1;
-                $(elem).css({'opacity': average});
-            } else {
-                // console.log(i2X, i2Y);
-                $(elem).css({'opacity': average});
-                if (elem === '#img2') {
+            }
+            switch (elem) {
+                case ('#earglow' || '#earglow2' || '#earglow3'):
+                    average = average - 1.1;
+                    $(elem).css({'opacity': average});
+                    break;
+                case ('#img2'):
+                    average = average - .3 -initAverage;
+                    $(elem).css({'opacity': average});
+                    // average = average * .25 + 1.06;
+                    // average < 1 ? average = 1 : average;
+                    // average > 1.35 ? average = 1.35 : average;
+                    // $('#eye-circle').css({'transform': 'scale(' + average + ')'});
+                    break;
+                case ('#chaneysegura'):
+                    let cutAv;
                     average = average + .3;
-                    $('#eye-circle').css({'opacity': average});
-                }
+                    average > .5 ? cutAv = .5 : average;
+                    $(elem).css({'opacity': cutAv || average});
+                    break;
+                case ('#near-sight-text'):
+                    average = -average * 150 + 215;
+                    $(elem).css({'color': 'rgba(' + average + ', ' + average + ', ' + average + ', 1)'});
+                    break;
+                case ('#hear'):
+                    average = average * 20 + 4;
+                    average < 16 ? average = 16 : average;
+                    average > 28 ? average = 28 : average;
+                    $(elem).css({'font-size': average + 'px' });
+                    break;
+                default:
+                    $(elem).css({'opacity': average});
             }
         }
-        colorHover('#img2', 920, 655);
-        colorHover('#earglow', 1320, 685);
-        colorHover('#earglow2', 1330, 655);
-        colorHover('#earglow3', 1320, 605);
+
+        if (!initDecay) {
+            initDecay = true;
+            setTimeout(() => {
+                let decAv = setInterval(() => {
+                    initAverage -= .001;
+                    if (initAverage <= 0 ){
+                        clearInterval(decAv);
+                    }
+                }, 10);
+            }, 1000);
+        }
+
+        if (initDecay2) {
+            colorHover('#img2', 920, 655);
+        }
+        // colorHover('#img6', 1175, 300);
+        colorHover('#chaneysegura', 850, 1300);
+        colorHover('#near-sight-text', 630, 690);
+        colorHover('#hear', 1330, 680);
+
+        // colorHover('#earglow', 1320, 685);
+        // colorHover('#earglow2', 1330, 655);
         // colorHover('#img3', 1250, 975);
         // colorHover('#img5', 1375, 650);
-        // colorHover('#img6', 775, 275);
         // colorHover('#img4', 0, 0);
-
-
-        // if (!isDrawing) {
-        //     tattooCtx.moveTo(e.clientX, e.clientY);
-        //     isDrawing = true;
-        // }
-        // tattooCtx.lineTo(e.clientX, e.clientY);
-        // tattooCtx.stroke();
-        // tattooCtx.clearRect(0, 0, tattooCtx.canvas.width, tattooCtx.canvas.height);
-
 
     });
 
@@ -348,17 +443,14 @@ $(document).ready(function() {
 
     let pxRatioH = 1;
     let pxRatioW = (window.outerWidth / myCan.canvas.width) * 1.9;
-
-    let marker1 = [parseInt(parseInt($('#marker1').css('margin-left')) * pxRatioW), parseInt(parseInt($('#marker1').css('margin-top')) * pxRatioH)];
-
-
     let gainNode;
     let gainNode2;
     let gainArr = [gainNode, gainNode2];
     var audio = document.getElementById("audio");
     let mousedown = false;
 
-    var list = ['./audio/highpitch.mp3', './audio/baseriff.mp3'] //array containing list of music sources
+    var list = ['./audio/baseriff.mp3', './audio/highpitch.mp3'] //array containing list of music sources
+    // var list = ['./audio/highpitch.mp3'] //array containing list of music sources
     var playListBuffer = new Array(); //array to put in all decoded audio
     var playList = new Array();
     var context = new AudioContext();
@@ -417,54 +509,6 @@ $(document).ready(function() {
         }
     }
 
-
-    // var context2 = new AudioContext();
-    // var context = new AudioContext(),
-    //     mousedown = false,
-    //     oscillator,
-    //     gainNode,
-    //     gainNode2;
-    // var audio = document.getElementById("audio");
-    // var source, source2;
-    // var stream;
-    // var soundSource, concertHallBuffer;
-    // var FilterSample = {
-    //     FREQ_MUL: 7000,
-    //     QUAL_MUL: 30,
-    //     playing: false
-    // };
-    // let soundBuffer;
-    //
-    // let request = new XMLHttpRequest();
-    // request.open('GET', './audio/baseriff.mp3', true);
-    // request.responseType = 'arraybuffer';
-    //
-    // request.onload = function() {
-    //     context.decodeAudioData(request.response, function(buffer) {
-    //         soundBuffer = buffer;
-    //         document.body.addEventListener('mouseover', function(e) {
-    //             FilterSample.play(soundBuffer);
-    //         });
-    //     });
-    // }
-    // request.send();
-    //
-    // gainNode = context.createGain();
-    // gainNode2 = context2.createGain();
-    // gainNode.gain.value = 0;
-    // gainNode2.gain.value = 0;
-    //
-    // FilterSample.play = function(buffer) {
-    //     source = context.createBufferSource();
-    //     source.buffer = buffer;
-    //     gainNode = context.createGain();
-    //     gainNode.gain.value = 0;
-    //     source.connect(gainNode);
-    //     gainNode.connect(context.destination);
-    //     source.start(0);
-    //     source.loop = true;
-    // }
-
     var calculateFrequency = function(mouseXPosition) {
         var minFrequency = 20,
             maxFrequency = 2000;
@@ -476,9 +520,14 @@ $(document).ready(function() {
     let yReturn;
     let average;
 
+    let marker1 = [parseInt(parseInt($('#marker1').css('margin-left')) * pxRatioW), parseInt(parseInt($('#marker1').css('margin-top')) * pxRatioH)];
     let marker2 = [parseInt(parseInt($('#ear-circle').css('margin-left')) * pxRatioW), parseInt(parseInt($('#ear-circle').css('margin-top')) * pxRatioH)];
 
     var calculateGain = function(mouseYPosition, mouseXPosition, markerArr) {
+
+        marker1 = [parseInt(parseInt($('#marker1').css('margin-left')) * pxRatioW), parseInt(parseInt($('#marker1').css('margin-top')) * pxRatioH)];
+        marker2 = [parseInt(parseInt($('#ear-circle').css('margin-left')) * pxRatioW), parseInt(parseInt($('#ear-circle').css('margin-top')) * pxRatioH)];
+
         var minGain = 0,
             maxGain = 1;
 
@@ -519,64 +568,128 @@ $(document).ready(function() {
         return average;
     };
 
+    let returnScreen = () => {
+        $('#eye-hover, #eye-circle').css({'pointer-events': 'auto'});
+        $('.blooming-menu__container').css('opacity', '0');
+        $('#img-contain').css({'filter': 'brightness(1)'});
+        bloomingMenu.close();
+        $('#info-table').css({
+            'opacity': '0',
+            'margin-top': '-70px'
+        });
+        $('#descript').css({
+            'opacity': '0',
+            'margin-bottom': '-70px'
+        });
+        $('.abs').css({
+            'transition': 'all .75s ease',
+            'background-color': 'transparent'
+        });
+        let volCount = .15;
+        let raiseVolume = setInterval(() => {
+            volCount = volCount + .005;
+            ambAudio.volume = volCount;
+            if (ambAudio.volume > .99) {
+                clearInterval(raiseVolume);
+            }
+        }, 1);
+    }
 
+    let toggleClasses = () => {
+        $('#img-contain').toggleClass('scale');
+        $('.abs').toggleClass('scale-ui');
+        $('.absR').toggleClass('scale-ui2');
+        $('.inner-block').toggleClass('opacity');
+        $('.imgs').toggleClass('scale-imgs');
+    }
+
+    const scrollAmount = (x, y) => {
+        scrollTransition = true;
+        bloomToggle = !bloomToggle;
+        $('#img-contain').css({'filter': 'brightness(1)'});
+        $('#img-contain').animate({
+            scrollTop: y,
+            scrollLeft: x
+        }, 1500, function() {
+            posX = container.scrollLeft/ 15;
+            posY = container.scrollTop/ 3.45;
+            scrollTransition = false;
+            damp = 2500;
+            initDamp();
+        });
+            toggle = !toggle;
+            returnScreen();
+            toggleClasses();
+    }
+
+    $(document).on('click', 'li.blooming-menu__item', function(e) {
+        let chosenBloom = $(this).index()+1;
+        switch (chosenBloom) {
+            case 1:
+                scrollAmount(300, 400);
+                break;
+            case 2:
+                scrollAmount(2748, 400);
+                break;
+            case 3:
+                scrollAmount(5196, 400);
+                break;
+        }
+    });
+
+    $(document).on('click', 'button.blooming-menu__main', function(e) {
+        bloomToggle = !bloomToggle;
+        console.log('bloom');
+        if (bloomToggle) {
+            console.log('bloom2');
+            $('#img-contain').css({'filter': 'brightness(0.75)'});
+        } else {
+            $('#img-contain').css({'filter': 'brightness(1)'});
+        }
+    });
+
+    bloomingMenu.render();
+    $('.blooming-menu__container').css('opacity', '0');
+
+    const switchView = () => {
+        toggle = !toggle;
+        if (toggle) {
+            $('#eye-hover, #eye-circle').css({'pointer-events': 'none'});
+            $('.blooming-menu__container').css('opacity', '1');
+            $('#info-table').css({
+                'opacity': '1',
+                'margin-top': '193px'
+            });
+            $('#descript').css({
+                'opacity': '1',
+                'margin-bottom': '188px'
+            });
+            $('.abs').css({
+                'transition': 'all .75s ease'
+            });
+            let volCount = 1;
+            let lowerVolume = setInterval(() => {
+                volCount = volCount - .005;
+                ambAudio.volume = volCount;
+                if (ambAudio.volume < .15) {
+                    clearInterval(lowerVolume);
+                }
+            }, 1);
+        } else {
+            returnScreen();
+        }
+        toggleClasses();
+    }
 
     $(document).on('keypress', function(e) {
         e.preventDefault();
         if (e.which === 122) {
-
-            toggle = !toggle;
-            if (toggle) {
-                $('#info-table').css({
-                    'opacity': '1',
-                    'margin-top': '193px'
-                });
-                $('#descript').css({
-                    'opacity': '1',
-                    'margin-bottom': '188px'
-                });
-                bloomingMenu.render();
-                $('.abs').css({
-                    'transition': 'all .75s ease'
-                });
-                let volCount = 1;
-                let lowerVolume = setInterval(() => {
-                    volCount = volCount - .005;
-                    ambAudio.volume = volCount;
-                    if (ambAudio.volume < .15) {
-                        clearInterval(lowerVolume);
-                    }
-                }, 1);
-            } else {
-                $('#info-table').css({
-                    'opacity': '0',
-                    'margin-top': '-70px'
-                });
-                $('#descript').css({
-                    'opacity': '0',
-                    'margin-bottom': '-70px'
-                });
-                $('.abs').css({
-                    'transition': 'all .75s ease',
-                    'background-color': 'transparent'
-                });
-                $('.blooming-menu__container').remove();
-                let volCount = .15;
-                let lowerVolume = setInterval(() => {
-                    volCount = volCount + .005;
-                    ambAudio.volume = volCount;
-                    if (ambAudio.volume >= 1) {
-                        clearInterval(lowerVolume);
-                    }
-                }, 1);
-            }
-
-            $('#img-contain').toggleClass('scale');
-            $('.abs').toggleClass('scale-ui');
-            $('.absR').toggleClass('scale-ui2');
-            $('.inner-block').toggleClass('opacity');
-            $('.imgs').toggleClass('scale-imgs');
+            switchView();
         }
+    });
+
+    $(document).on('click', 'div#z', () => {
+        switchView();
     });
 
     document.body.addEventListener('mousedown', function(e) {
@@ -624,8 +737,10 @@ $(document).ready(function() {
 
     document.body.addEventListener('mousemove', function(e) {
 
-        gainArr[0].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker1), context.currentTime, .5);
-        gainArr[1].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker2), context.currentTime, .5);
+        if (isHover) {
+            gainArr[0].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker1), context.currentTime, .5);
+            gainArr[1].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker2), context.currentTime, .5);
+        }
 
     });
 
@@ -914,7 +1029,52 @@ $(document).ready(function() {
     //     ]);
     // })
 
-
+    // var context2 = new AudioContext();
+    // var context = new AudioContext(),
+    //     mousedown = false,
+    //     oscillator,
+    //     gainNode,
+    //     gainNode2;
+    // var audio = document.getElementById("audio");
+    // var source, source2;
+    // var stream;
+    // var soundSource, concertHallBuffer;
+    // var FilterSample = {
+    //     FREQ_MUL: 7000,
+    //     QUAL_MUL: 30,
+    //     playing: false
+    // };
+    // let soundBuffer;
+    //
+    // let request = new XMLHttpRequest();
+    // request.open('GET', './audio/baseriff.mp3', true);
+    // request.responseType = 'arraybuffer';
+    //
+    // request.onload = function() {
+    //     context.decodeAudioData(request.response, function(buffer) {
+    //         soundBuffer = buffer;
+    //         document.body.addEventListener('mouseover', function(e) {
+    //             FilterSample.play(soundBuffer);
+    //         });
+    //     });
+    // }
+    // request.send();
+    //
+    // gainNode = context.createGain();
+    // gainNode2 = context2.createGain();
+    // gainNode.gain.value = 0;
+    // gainNode2.gain.value = 0;
+    //
+    // FilterSample.play = function(buffer) {
+    //     source = context.createBufferSource();
+    //     source.buffer = buffer;
+    //     gainNode = context.createGain();
+    //     gainNode.gain.value = 0;
+    //     source.connect(gainNode);
+    //     gainNode.connect(context.destination);
+    //     source.start(0);
+    //     source.loop = true;
+    // }
 
 
 

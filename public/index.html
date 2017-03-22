@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
     	<link rel="stylesheet" href="/css/reset.css" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Geostar+Fill|Montserrat+Subrayada|Revalia|Warnes|Yantramanav:900|Syncopate:700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Geostar+Fill|Montserrat+Subrayada|Revalia|Warnes|Yantramanav:900|Syncopate:700|Bungee+Hairline|Orbitron" rel="stylesheet">
         <link rel="stylesheet" href="/sass/style.min.css" type="text/css">
         <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -24,28 +24,32 @@
 
 
                 <!-- <img id="img" class="imgs" src="./images/collage.jpg"> -->
-                <!-- <img id="img" class="lazy" data-original="./images/mars.jpg" width="12818" height="1730"> -->
+                <!-- <img id="img" class="lazy" src="./images/mars.jpg" width="12818" height="1730"> -->
                 <img id="img" class="lazy" data-original="./images/manlying4.jpg" width="2448" height="1730">
-                <img id="twins" class="imgs lazy" data-original="./images/teen2s2.png" width="2448" height="1730">
-                <img id="face2" class="imgs lazy" data-original="./images/man2.png" width="2448" height="1730">
-                <img id="sculpt" class="imgs lazy" data-original="./images/sculpt.jpg" width="2448" height="1730">
+                <img id="twins" class="imgs lazy" src="./images/teen2s2.png" width="2448" height="1730">
+                <img id="face2" class="imgs lazy" src="./images/man2.png" width="2448" height="1730">
+                <img id="sculpt" class="imgs lazy" src="./images/sculpt.jpg" width="2448" height="1730">
 
-                <div id=marker1></div>
+                <div id=marker1>
+                    <div id="near-sight-text">About</div>
+                </div>
 
-            <canvas id="tattooCanvas" width="2448" height="1730"></canvas>
+                <canvas id="tattooCanvas" width="2448" height="1730"></canvas>
+
+                <!-- <img id="img2" class="color-hover" src="./images/manlying3.png" width="2448" height="1730"> -->
+                <img id="img2" class="color-hover" src="./images/manlying4BWback2.png" width="2448" height="1730">
+                <!-- <img id="img6" class="color-hover" src="./images/manlying4hair.png" width="2448" height="1730"> -->
+                <img id="chaneysegura" class="color-hover" src="./images/chaneysegura.png" width="2448" height="1730">
 
                 <!-- <img id="img2" class="color-hover" src="./images/man2eye4.png" width="2448" height="1730"> -->
-                <img id="img2" class="color-hover" src="./images/manlying3.png" width="2448" height="1730">
-                <img id="earglow" class="color-hover" src="./images/earglow.png" width="2448" height="1730">
+                <!-- <img id="earglow" class="color-hover" src="./images/earglow.png" width="2448" height="1730">
                 <img id="earglow2" class="color-hover" src="./images/earglow2.png" width="2448" height="1730">
-                <img id="earglow3" class="color-hover" src="./images/flare1.png" width="2448" height="1730">
+                <img id="earglow3" class="color-hover" src="./images/flare1.png" width="2448" height="1730"> -->
                 <!-- <img id="img3" class="color-hover" src="./images/man2mouth3.png" width="2448" height="1730"> -->
                 <!-- <img id="img4" class="color-hover" src="./images/man2halfBW.png" width="2448" height="1730"> -->
                 <!-- <img id="img5" class="color-hover" src="./images/man2eye_right2.png" width="2448" height="1730"> -->
-                <img id="img5" class="color-hover" src="./images/man2grain.png" width="2448" height="1730">
-                <img id="img6" class="color-hover" src="./images/man2hair.png" width="2448" height="1730">
-                <!-- <div id="vert-line"></div> -->
-
+                <!-- <img id="img5" class="color-hover" src="./images/man2grain.png" width="2448" height="1730"> -->
+                <!-- <img id="img6" class="color-hover" src="./images/man2hair.png" width="2448" height="1730"> -->
 
                 <!-- <div class='o'></div> -->
                 <!-- <div class="outter">
@@ -74,8 +78,22 @@
 
               <!-- <div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div> -->
 
-            <div id="eye-circle"></div>
-            <div id="ear-circle"></div>
+          <!-- <div id="eye-circle">
+              <div id="look">view</div>
+              <div id="eye-hover"></div>
+          </div> -->
+            <div id="eye-hover">
+                <div id="eye-circle">
+                    <div id="look">view</div>
+                </div>
+            </div>
+            <div id="ear-circle">
+                <div id="hear">listen</div>
+            </div>
+            <div id="head-circle">
+                <div id="z">z</div>
+            </div>
+            <!-- <div class="element" data-type="typed"></div> -->
         </div>
         <div id="ring-holder">
             <div id="ring">
@@ -163,18 +181,8 @@
                     <th id="dark" class="bottom-info">Age</th>
                     <!-- <th>Beware lest you lose the substance by grasping at the shadow. ~Aesop</th> -->
                   </tr>
-              </table>
-                 <!-- <tr>
-                   <td>Jill</td>
-                   <td>Smith</td>
-                   <td>50</td>
-                 </tr>
-                 <tr>
-                   <td>Eve</td>
-                   <td>Jackson</td>
-                   <td>94</td>
-                 </tr> -->
-            </table>
+             </table>
+
             <!-- <div id="bloom-contain"></div> -->
         </div>
         <audio id="ambient-audio" autoplay>
@@ -209,6 +217,7 @@
     <script src="/js/OrbitControls.js"></script>
     <script src="/js/Projector.js"></script>
     <script src="/js/three_glow.js"></script>
+    <script src="/js/typed.js"></script>
     <!-- <script>
     // MAIN
 // standard global variables

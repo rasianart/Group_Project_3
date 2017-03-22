@@ -9,10 +9,13 @@ var startY = 0;
 var isDown;
 var isHover = false;
 var isMoved = false;
-let complete = false;
+let complete1 = false;
+let complete2 = false;
+let complete3 = false;
 let holdX;
 let holdY;
 let audio;
+let isToggled = false;
 
 let enter1 = false;
 let enter2 = false;
@@ -37,6 +40,21 @@ $(document).mouseout(function (e) {
 //     storedLines.length = 0;
 //     redrawStoredLines();
 // });
+$(document).on('keypress', function(e) {
+    e.preventDefault();
+    if (e.which === 122) {
+        isToggled = !isToggled;
+        storedLines.length = 0;
+        redrawStoredLines();
+
+    }
+});
+
+$(document).on('click', 'div#z', () => {
+    isToggled = !isToggled;
+    storedLines.length = 0;
+    redrawStoredLines();
+});
 
 function handleMouseDown(e) {
     e.preventDefault();
@@ -84,7 +102,7 @@ function handleMouseMove(e) {
     let scrollY = $('#img-contain').scrollTop();
     let iX = scrollX + tempX;
     let iY = scrollY + tempY;
-
+    // console.log(iX, iY);
     if (!isMoved) {
         startX = 940;
         startY = 655;
@@ -92,15 +110,58 @@ function handleMouseMove(e) {
 
     isMoved = true;
 
-    if (!complete && iX > 900 && iX < 950 && iY > 630 && iY < 670) {
+    if ((!complete1 || !complete2 || !complete3) && iX > 900 && iX < 950 && iY > 630 && iY < 670) {
         isHover = true;
+    }
+
+    if (isHover) {
+        $('#marker1').css({
+            'margin-left': '490px',
+            'margin-top': '640px',
+            'opacity': '1'
+        });
+        $('#ear-circle').css({
+            'margin-left': '1315px',
+            'margin-top': '650px',
+            'opacity': '1'
+        });
+        $('#head-circle').css({
+            'margin-left': '1100px',
+            'margin-top': '350px',
+            'opacity': '1'
+        });
+    }
+
+    if (isHover && iX > 965) {
+        $('#near-sight-text').css({'opacity': '0'});
+        $('#hear').css({'opacity': '1'});
+    } else if (isHover && iX < 935) {
+        $('#near-sight-text').css({'opacity': '1'});
+        $('#hear').css({'opacity': '0'});
+    } else {
+        $('#near-sight-text').css({'opacity': '1'});
+        $('#hear').css({'opacity': '1'});
+    }
+
+    if (!complete3) {
+        if (isHover && iY < 630 && iX > 935) {
+            $('#z').css({'opacity': '1'});
+        } else {
+            $('#z').css({'opacity': '0'});
+        }
+    }
+
+    if (iY > 950) {
+        $('#near-sight-text').css({'opacity': '0'});
+        $('#hear').css({'opacity': '0'});
     }
 
     if (!isDown && !isHover) {
         return;
     }
 
-    if (iX > 479 && iX < 585 && iY > 638 && iY < 766 && isHover && !isDown) {
+    //connect outer sight
+    if (iX > 479 && iX < 585 && iY > 638 && iY < 766 && isHover && !isDown && !isToggled) {
 
         storedLines.push({
             x1: 940,
@@ -110,9 +171,8 @@ function handleMouseMove(e) {
         });
         isHover = false;
         redrawStoredLines();
-        console.log('create');
         let mouthSphere = $('<div id="mouth-sphere"></div>').appendTo('#img-contain');
-        complete = true;
+        complete1 = true;
         enter1 = false;
         enter2 = false;
         setTimeout(()=>{
@@ -156,14 +216,105 @@ function handleMouseMove(e) {
 
     }
 
-    if (isDown) {
+    //connect ear
+    if (iX > 1300 && iX < 1360 && iY > 650 && iY < 710 && isHover && !isDown && !isToggled) {
+
+        storedLines.push({
+            x1: 940,
+            y1: 655,
+            x2: 1345,
+            y2: 680
+        });
+        isHover = false;
+        redrawStoredLines();
+        console.log('create');
+        let mouthSphere = $('<div id="ear-drop"></div>').appendTo('#img-contain');
+        complete2 = true;
+        enter1 = false;
+        enter2 = false;
+        setTimeout(()=>{
+            mouthSphere.css({
+                'width': '75px',
+                'height': '75px',
+                'border': '1px solid white',
+                'margin-left': '1308px',
+                'margin-top': '940px'
+            });
+
+            audio = new Audio('../audio/beep.mp3');
+            audio.volume = .25;
+            audio.play();
+
+            tattooCtx.strokeStyle = "white";
+            tattooCtx.lineWidth = 2;
+
+            let xA = 1345;
+            let yA = 680;
+
+            let followMouth = setInterval(()=>{
+
+                if (xA > 840 && yA > 940) {
+                    return;
+                }
+                storedLines.push({
+                    x1: 1345,
+                    y1: 680,
+                    x2: 1345,
+                    y2: yA
+                });
+                xA = xA + 1.2;
+                yA++;
+                // isHover = false;
+                redrawStoredLines();
+            }, 3)
+        },1);
+
+    }
+
+    //connect head
+    if (iX > 1100 && iX < 1200 && iY > 350 && iY < 450 && isHover && !isDown && !isToggled) {
+
+        storedLines.push({
+            x1: 940,
+            y1: 655,
+            x2: 1120,
+            y2: 440
+        });
+        isHover = false;
+        redrawStoredLines();
+        complete3 = true;
+        enter1 = false;
+        enter2 = false;
+        setTimeout(()=>{
+            audio = new Audio('../audio/beep.mp3');
+            audio.volume = .25;
+            audio.play();
+            $('#z').css({
+                'transition': 'all .5s ease',
+                'opacity': '0'
+            }).delay(500).html('').css({
+                'transition': 'all 0s ease',
+                'margin-left': '0px',
+                'margin-top': '0px',
+                'background': 'url(../images/headimg.png)'
+            });
+            setTimeout(()=>{
+                $('#z').css({
+                    'opacity': '1',
+                    'transition': 'all .5s ease'
+                });
+            }, 100);
+        },1);
+    }
+
+    if (isDown && !isToggled) {
         redrawStoredLines();
         // draw the current line
         tattooCtx.beginPath();
         tattooCtx.moveTo(startX, startY);
         tattooCtx.lineTo(iX, iY);
         tattooCtx.stroke();
-    } else if (isHover && !isDown) {
+    } else if (isHover && !isDown && !isToggled) {
 
         redrawStoredLines();
         enter1 = true;
