@@ -27,8 +27,8 @@
                 <!-- <img id="img" class="lazy" src="./images/mars.jpg" width="12818" height="1730"> -->
                 <img id="img" class="lazy" data-original="./images/manlying4.jpg" width="2448" height="1730">
                 <img id="twins" class="imgs lazy" src="./images/teen2s2.png" width="2448" height="1730">
-                <img id="face2" class="imgs lazy" src="./images/man2.png" width="2448" height="1730">
-                <img id="sculpt" class="imgs lazy" src="./images/sculpt.jpg" width="2448" height="1730">
+                <img id="face2" class="imgs lazy" src="./images/uncanny2.png" width="2448" height="1730">
+                <img id="sculpt" class="imgs lazy" src="./images/man2.png" width="2448" height="1730">
 
                 <div id=marker1>
                     <div id="near-sight-text">About</div>
@@ -58,7 +58,7 @@
 
              <div class="triangle">
                     <div class="mask-holder" id="mask-holder">
-                        <svg id="new-svg" width="2448" height="1730"  style="opacity: 1; z-index: 100000; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                        <svg id="new-svg" width="2448" height="1730"  style="opacity: 1; z-index: 4; position: absolute;" xmlns="http://www.w3.org/2000/svg">
                           <defs>
                             <clipPath id="image">
                             </clipPath>
@@ -89,10 +89,23 @@
                 <!-- <div id="eye-hover2"></div> -->
             </div>
             <div id="ear-circle">
-                <div id="hear">listen</div>
+                <div id="hear" data-activate="incomplete">listen</div>
             </div>
             <div id="head-circle">
                 <div id="z">z</div>
+            </div>
+            <div id="about-text-holder" data-text="inactive">
+                <div id="text1" class="about-text"></div>
+                <div id="text2" class="about-text"></div>
+                <div id="text3" class="about-text"></div>
+                                    <!-- Lorem Ipsum is simply dummy text <br>
+                                    of the printing and typesetting industry. Lorem <br>
+                                    Ipsum has been the industry's standard <br>
+                                    dummy text ever since the 1500s, <br>
+                                    when an unknown printer took a galley of type and <br>
+                                    scrambled it to make a type specimen book. <br>
+                                    It has survived not only five centuries. -->
+                <!-- </div> -->
             </div>
             <!-- <div class="element" data-type="typed"></div> -->
         </div>
@@ -183,7 +196,7 @@
                     <!-- <th>Beware lest you lose the substance by grasping at the shadow. ~Aesop</th> -->
                   </tr>
              </table>
-
+        <div class="middle-block"></div>
             <!-- <div id="bloom-contain"></div> -->
         </div>
         <audio id="ambient-audio" autoplay>
@@ -217,7 +230,7 @@
     <script src="/js/stats.min.js"></script>
     <script src="/js/OrbitControls.js"></script>
     <script src="/js/Projector.js"></script>
-    <script src="/js/three_glow.js"></script>
+    <!-- <script src="/js/three_glow.js"></script> -->
     <script src="/js/typed.js"></script>
     <!-- <script>
     // MAIN

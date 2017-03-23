@@ -7,7 +7,10 @@ $(document).ready(function() {
     let bloomToggle = false;
     let isHover = false;
 
-    $('#chaneysegura').css({'opacity': '.6'});
+    $('#chaneysegura').css({
+        'opacity': '.6',
+        'height': '100px'
+    });
     setTimeout(() => {
         $('#chaneysegura').css({'transition': 'all .1s ease'});
     }, 1500);
@@ -19,12 +22,32 @@ $(document).ready(function() {
         event: "mouseover"
     });
 
-    // $(function(){
-    // 		$(".element").typed({
-    // 			strings: ["It is important to take your medicine every day as prescribed.", "You will receive advice about ways to help you take it regularly so that it has the best chance to help you avoid infection.", "Tell your provider if you are having trouble remembering to take your medicine or if you want to stop medication."],
-    // 			typeSpeed: 0
-    // 		});
-    // 	});
+    const typeAbout = () => {
+        $("#text1").typed({
+            strings: ["Lorem Ipsum is simply dummy text"],
+            typeSpeed: 0,
+            backDelay: 5000000,
+            showCursor: false
+        });
+        $("#text2").typed({
+            strings: ["of the printing and typesetting industry."],
+            typeSpeed: 0,
+            backDelay: 5000000,
+            showCursor: false
+        });
+        $("#text3").typed({
+            strings: ["Ipsum has been the industry's standard"],
+            typeSpeed: 0,
+            backDelay: 5000000,
+            showCursor: false
+        });
+
+        $('#about-text-holder').css({
+            'margin-left': '375px'
+        })
+    };
+
+    // typeAbout();
 
     let ambAudio = document.getElementById('ambient-audio');
     ambAudio.volume = .75;
@@ -117,10 +140,11 @@ $(document).ready(function() {
     container.scrollTop = 800;
     container.scrollLeft = 400;
 
+    let initWait;
 
     const initDamp = () => {
         let decrement = 2;
-        let initWait = setInterval(function() {
+        initWait = setInterval(function() {
 
             if (damp >= 13450) {
                 decrement = decrement * 1.01;
@@ -148,6 +172,7 @@ $(document).ready(function() {
     setTimeout(() => {
         $gal.mousemove(function(e) {
 
+
             mX = e.pageX - $(this).parent().offset().left - this.offsetLeft;
             mX2 = Math.min(Math.max(0, mX - mPadd), mmAA) * mmAAr;
             mY = e.pageY - $(this).parent().offset().top - this.offsetTop;
@@ -168,8 +193,6 @@ $(document).ready(function() {
         initDamp();
     }, 1000);
 
-
-
     // setTimeout(() => {
     //     $('#img-contain').animate({
     //         scrollTop: 700,
@@ -181,8 +204,8 @@ $(document).ready(function() {
     //     });
     // }, 1200);
 
-
     setInterval(function() {
+
         if (activate && !scrollTransition) {
 
             posX += (mX2 - posX - 550) / damp; // zeno's paradox equation "catching delay"
@@ -191,6 +214,7 @@ $(document).ready(function() {
             posY += (mY2 - posY - 250) * 5 / damp; // zeno's paradox equation "catching delay"
             $gal.scrollTop((posY * hDiff));
         }
+
     }, 10);
     let imgData = [];
     let can;
@@ -209,6 +233,7 @@ $(document).ready(function() {
     let initDecay = false;
     let initDecay2 = false;
     let initAverage = .5;
+    let hearFont = 18;
 
     setTimeout(() => {
         initDecay2 = true;
@@ -276,21 +301,16 @@ $(document).ready(function() {
                 diffX = (-diffX * .01 + .15) * .1 + 1;
                 $(elem).css({'opacity': diffX});
             }
+
+            if ($('#hear').data('activate') === 'complete') {
+                hearFont = 22;
+            }
+
             switch (elem) {
                 case ('#earglow' || '#earglow2' || '#earglow3'):
                     average = average - 1.1;
                     $(elem).css({'opacity': average});
                     break;
-                // case ('#img2'):
-                //     // average = average * 1.25 - .7 -initAverage;
-                //     average = average - .3 -initAverage;
-                //     // console.log(average);
-                //     $(elem).css({'opacity': average});
-                //     // average = average * .25 + 1.06;
-                //     // average < 1 ? average = 1 : average;
-                //     // average > 1.35 ? average = 1.35 : average;
-                //     // $('#eye-circle').css({'transform': 'scale(' + average + ')'});
-                //     break;
                 case ('#chaneysegura'):
                     let cutAv;
                     average = average + .3;
@@ -299,12 +319,13 @@ $(document).ready(function() {
                     break;
                 case ('#near-sight-text'):
                     average = -average * 150 + 215;
+                    (average < 100) && (average = 100);
                     $(elem).css({'color': 'rgba(' + average + ', ' + average + ', ' + average + ', 1)'});
                     break;
                 case ('#hear'):
                     average = average * 20 + 4;
-                    average < 16 ? average = 16 : average;
-                    average > 28 ? average = 28 : average;
+                    average < hearFont ? average = hearFont : average;
+                    average > 30 ? average = 30 : average;
                     $(elem).css({'font-size': average + 'px' });
                     break;
                 default:
@@ -342,6 +363,8 @@ $(document).ready(function() {
 
     let shapeArr = [];
     let countSkip = 0;
+    let stopText = false;
+
     $(document).on('mousemove', function(e) {
         let tempX = e.pageX;
         let tempY = e.pageY;
@@ -356,10 +379,18 @@ $(document).ready(function() {
         let range = (rangeX + rangeY) / 2;
         range < 0 ? range = 0 : range;
 
-        $('#glow1').css({
-            'box-shadow': '0px 0px ' + (range - 80) + 'px ' + (range - 70) + 'px ' + 'white',
-            'opacity': (range / 100)
-        });
+        // $('#glow1').css({
+        //     'box-shadow': '0px 0px ' + (range - 80) + 'px ' + (range - 70) + 'px ' + 'white',
+        //     'opacity': (range / 100)
+        // });
+
+        if ($('#about-text-holder').data('text') === 'active' && !stopText) {
+            console.log($('#about-text-holder').data('text'), stopText);
+            stopText = true;
+            $('#about-text-holder').data('text', 'inactive');
+            typeAbout();
+        }
+
     })
 
     // document.onmousemove = getMouseXY;
@@ -584,6 +615,7 @@ $(document).ready(function() {
         $('.absR').toggleClass('scale-ui2');
         $('.inner-block').toggleClass('opacity');
         $('.imgs').toggleClass('scale-imgs');
+        $('.middle-block').toggleClass('top-index');
     }
 
     const scrollAmount = (x, y) => {
@@ -617,6 +649,9 @@ $(document).ready(function() {
             case 3:
                 scrollAmount(5196, 400);
                 break;
+            case 4:
+                scrollAmount(7696, 400);
+                break;
         }
     });
 
@@ -637,6 +672,7 @@ $(document).ready(function() {
     const switchView = () => {
         toggle = !toggle;
         if (toggle) {
+            clearInterval(initWait);
             $('#eye-hover, #eye-circle').css({'pointer-events': 'none'});
             $('.blooming-menu__container').css('opacity', '1');
             $('#info-table').css({
@@ -658,7 +694,9 @@ $(document).ready(function() {
                     clearInterval(lowerVolume);
                 }
             }, 1);
+            damp = 3500;
         } else {
+            damp = 1650;
             returnScreen();
         }
         toggleClasses();

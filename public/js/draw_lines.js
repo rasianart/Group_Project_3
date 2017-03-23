@@ -1,3 +1,5 @@
+$(document).ready(function() {
+
 var tattooCanvas = document.getElementById("tattooCanvas");
 var tattooCtx = tattooCanvas.getContext("2d");
 var tattooCanvasOffset = $("#tattooCanvas").offset();
@@ -9,9 +11,9 @@ var startY = 0;
 var isDown;
 var isHover = false;
 var isMoved = false;
-let complete1 = false;
-let complete2 = false;
-let complete3 = false;
+let completeAbout = false;
+let completeListen = false;
+let completeZ = false;
 let holdX;
 let holdY;
 let isToggled = false;
@@ -60,7 +62,9 @@ $(document).on('keypress', function(e) {
 });
 
 $(document).on('click', 'div#z', () => {
-    isToggled = !isToggled;
+    isToggled = !isToggled
+    enter1 = false;
+    enter2 = false;
     storedLines.length = 0;
     redrawStoredLines();
 });
@@ -114,7 +118,7 @@ function handleMouseMove(e) {
 
     isMoved = true;
 
-    if ((!complete1 || !complete2 || !complete3) && iX > 900 && iX < 950 && iY > 630 && iY < 670) {
+    if ((!completeAbout || !completeListen || !completeZ) && iX > 900 && iX < 950 && iY > 630 && iY < 670) {
         isHover = true;
         if (!onHover) {
             audio.play()
@@ -143,17 +147,17 @@ function handleMouseMove(e) {
     }
 
     if (isHover && iX > 965) {
-        $('#near-sight-text').css({'opacity': '0'});
-        $('#hear').css({'opacity': '1'});
+        !completeAbout && $('#near-sight-text').css({'opacity': '0'});
+        !completeListen && $('#hear').css({'opacity': '1'});
     } else if (isHover && iX < 935) {
-        $('#near-sight-text').css({'opacity': '1'});
-        $('#hear').css({'opacity': '0'});
+        !completeAbout && $('#near-sight-text').css({'opacity': '1'});
+        !completeListen && $('#hear').css({'opacity': '0'});
     } else {
         $('#near-sight-text').css({'opacity': '1'});
         $('#hear').css({'opacity': '1'});
     }
 
-    if (!complete3) {
+    if (!completeZ) {
         if (isHover && iY < 630 && iX > 935) {
             $('#z').css({'opacity': '1'});
         } else {
@@ -161,12 +165,15 @@ function handleMouseMove(e) {
         }
     }
 
-    if (iY > 950) {
+    if (iY > 950 && !completeAbout && !completeListen) {
         $('#near-sight-text').css({'opacity': '0'});
         $('#hear').css({'opacity': '0'});
     }
 
     if (!isDown && !isHover) {
+        !completeAbout && $('#marker1').css({'opacity': '0'});
+        !completeListen && $('#ear-circle').css({'opacity': '0'});
+        !completeZ && $('#head-circle').css({'opacity': '0'});
         return;
     }
 
@@ -183,14 +190,14 @@ function handleMouseMove(e) {
         $('#img2').css({'opacity': '0'});
         redrawStoredLines();
         let mouthSphere = $('<div id="mouth-sphere"></div>').appendTo('#img-contain');
-        complete1 = true;
+        completeAbout = true;
         enter1 = false;
         enter2 = false;
         setTimeout(()=>{
             mouthSphere.css({
                 'width': '75px',
                 'height': '75px',
-                'border': '1px solid white',
+                'border': '2px solid white',
                 'margin-left': '800px',
                 'margin-top': '900px'
             });
@@ -206,6 +213,7 @@ function handleMouseMove(e) {
             let followMouth = setInterval(()=>{
 
                 if (xA > 840 && yA > 940) {
+                    $('#about-text-holder').data('text', 'active');
                     return;
                 }
                 storedLines.push({
@@ -234,14 +242,15 @@ function handleMouseMove(e) {
         $('#img2').css({'opacity': '0'});
         redrawStoredLines();
         let mouthSphere = $('<div id="ear-drop"></div>').appendTo('#img-contain');
-        complete2 = true;
+        $('#hear').data('activate', 'complete');
+        completeListen = true;
         enter1 = false;
         enter2 = false;
         setTimeout(()=>{
             mouthSphere.css({
                 'width': '75px',
                 'height': '75px',
-                'border': '1px solid white',
+                'border': '2px solid white',
                 'margin-left': '1308px',
                 'margin-top': '940px'
             });
@@ -284,7 +293,7 @@ function handleMouseMove(e) {
         isHover = false;
         $('#img2').css({'opacity': '0'});
         redrawStoredLines();
-        complete3 = true;
+        completeZ = true;
         enter1 = false;
         enter2 = false;
         setTimeout(()=>{
@@ -363,6 +372,7 @@ function handleMouseUp(e) {
 
     enter1 = false;
     enter2 = false;
+    $('#img2').css({'opacity': '0'});
     redrawStoredLines();
 
     isDown = false;
@@ -403,3 +413,5 @@ function redrawStoredLines() {
         tattooCtx.stroke();
     }
 }
+
+});
