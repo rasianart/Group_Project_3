@@ -6,20 +6,37 @@ $(document).ready(function() {
     let scrollTransition = false;
     let bloomToggle = false;
     let isHover = false;
+    let shiftScroll = false;
+
+    // $('#img-masc').css({'opacity': '.5'});
+    // setTimeout(()=>{
+    //     $('#img-masc').css({'transition': 'all 5s ease', 'filter': 'contrast(100%)', 'opacity': '1'});
+    // }, 1500);
+
+    $('.abs, absR').on('mouseenter', ()=>{
+        clearInterval(activateMouse);
+    })
+    $('.abs, absR').on('mouseleave', ()=>{
+        activateMouse = setInterval(updateMouse, 10);
+    })
 
     $('#chaneysegura').css({
-        'opacity': '.6',
-        'height': '100px'
+        'opacity': '.75',
+        'margin-bottom': '367px',
+        'transform': 'scale(1, 1)',
     });
-    setTimeout(() => {
-        $('#chaneysegura').css({'transition': 'all .1s ease'});
-    }, 1500);
 
+    setTimeout(() => {
+        $('#chaneysegura').css({'transition': 'all 15s ease', 'filter': 'brightness(2)'});
+    }, 5000);
 
     $("img.lazy").lazyload({
         threshold: 700,
         effect: "fadeIn",
-        event: "mouseover"
+        event: "mouseover",
+        load: function() {
+            $('#cv').css({'opacity': '1'});
+        }
     });
 
     const typeAbout = () => {
@@ -49,14 +66,13 @@ $(document).ready(function() {
 
     // typeAbout();
 
-    let ambAudio = document.getElementById('ambient-audio');
+    const ambAudio = document.getElementById('ambient-audio');
     ambAudio.volume = .75;
 
-    $('#ear-circle').on('mouseenter', () => {
-        console.log('hey');
+    $('#ear-hover').on('mouseenter', () => {
         ambAudio.muted = true;
     });
-    $('#ear-circle').on('mouseleave', () => {
+    $('#ear-hover').on('mouseleave', () => {
         ambAudio.muted = false;
     });
 
@@ -113,13 +129,15 @@ $(document).ready(function() {
         }
     });
 
-    var $gal = $("#img-contain"),
+    let $gal = $("#page-contain"),
         galW = 1224,
-        galH = $gal.outerHeight(true),
-        galSW = $gal[0].scrollWidth * 2,
-        galSH = $gal[0].scrollHeight * 2,
-        wDiff = (galSW / galW) - 1,
-        hDiff = (galSH / galH) - 1, // widths difference ratio
+        galH = 600,
+        // galH = $gal.outerHeight(true),
+        galSW = 19584,
+        // galSW = $gal[0].scrollWidth * 2,
+        galSH = $gal[0].scrollHeight * 4,
+        wDiff = (galSW / galW) - 1, // widths difference ratio
+        hDiff = (galSH / galH) - 1,
         // mPadd = 60, // Mousemove Padding
         mPadd = 0, // Mousemove Padding
         damp = 13500, // Mousemove response softness
@@ -130,15 +148,16 @@ $(document).ready(function() {
         mX2 = 0,
         mY2 = 0, // Modified mouse position
         posX = 26.75,
-        posY = 231,
+        posY = 36.3,
         mmAA = galW - (mPadd * 2),
         mmAAH = galH - (mPadd * 2), // The mousemove available area
         mmAAr = (galW / mmAA);
         mmAArH = (galH / mmAAH); // get available mousemove fidderence ratio
 
-    var container = document.getElementById('img-contain');
-    container.scrollTop = 800;
-    container.scrollLeft = 400;
+    const containerX = document.querySelector('.img-contain');
+    const containerY = document.getElementById('page-contain');
+    containerY.scrollTop = 800;
+    containerX.scrollLeft = 400;
 
     let initWait;
 
@@ -156,22 +175,26 @@ $(document).ready(function() {
                 decrement = decrement * 1.005;
             }
             damp = damp - decrement;
-            if (damp < 1650) {
+            if (damp < 2650) {
                 stopInt();
             }
         }, 10);
-
-        let stopInt = () => {
-            clearInterval(initWait);
-        }
     }
 
-    // damp = 1650;
-//******** UNCOMMENT THIS TIMOUT AND COMMENT THE PREVIOUS damp = 1650; AFTER DONE TESTING
+    const stopInt = () => {
+        clearInterval(initWait);
+    }
 
+    // damp = 2650;
+//******** UNCOMMENT THIS TIMOUT AND COMMENT THE PREVIOUS damp = 1650; AFTER DONE TESTING
     setTimeout(() => {
         $gal.mousemove(function(e) {
 
+            !activate && initDamp();
+            activate = true;
+
+            tempX2 = e.pageX;
+            tempY2 = e.pageY;
 
             mX = e.pageX - $(this).parent().offset().left - this.offsetLeft;
             mX2 = Math.min(Math.max(0, mX - mPadd), mmAA) * mmAAr;
@@ -186,39 +209,64 @@ $(document).ready(function() {
             $('.absR').css({
                 'opacity': opacAmount2*2.5
             });
-
-            activate = true;
         });
-
-        initDamp();
     }, 1000);
 
-    // setTimeout(() => {
-    //     $('#img-contain').animate({
-    //         scrollTop: 700,
-    //         scrollLeft: 400
-    //     }, 2000, function() {
-    //         posX = container.scrollLeft/ 15;
-    //         posY = container.scrollTop/ 3.45;
-    //         initDamp();
-    //     });
-    // }, 1200);
-
-    setInterval(function() {
+    let updateMouse = () => {
 
         if (activate && !scrollTransition) {
 
-            posX += (mX2 - posX - 550) / damp; // zeno's paradox equation "catching delay"
-            $gal.scrollLeft((posX * wDiff));
+            posX += (mX2 - posX - 550) / damp;
+            if (posX < 0) {posX = 0}
+            if (!moveWithAudio) {
+                $('.img-contain').scrollLeft((posX * wDiff));
+            } else if (!shiftScroll) {
 
-            posY += (mY2 - posY - 250) * 5 / damp; // zeno's paradox equation "catching delay"
-            $gal.scrollTop((posY * hDiff));
+                shiftScroll = true;
+                clearInterval(activateMouse);
+
+                $('.img-contain').animate({
+                    scrollLeft: 1400
+                }, 3000, function() {
+                    stopInt();
+                    damp = 13500;
+                    initDamp();
+                    posX = containerX.scrollLeft / 15;
+                    activateMouse = setInterval(updateMouse, 10);
+                });
+            }
+
+            posY += (mY2 - posY - 250) / damp;
+            if (posY < 0) {
+                posY = 0
+            } else if (posY > 120) {
+                posY = 120;
+            }
+            if (!moveWithAudio) {
+                $gal.scrollTop((posY * hDiff))
+            } else if (!shiftScroll) {
+                $('#page-contain').animate({
+                    scrollTop: 600
+                }, 3000, function() {
+                    posY = containerY.scrollTop / 22.22;
+                });
+            }
         }
+    }
+    let activateMouse = setInterval(updateMouse, 10);
 
-    }, 10);
     let imgData = [];
     let can;
     let myCan = document.getElementById('img');
+
+    $('#bio-text').on('mouseenter', function() {
+        if (damp != 6000) {stopInt()}
+        damp = 8000;
+    });
+    $('#bio-text').on('mouseleave', function() {
+        // damp = 8250;
+        initDamp();
+    })
 
     myCan.canvas = $('<canvas />')[0];
     myCan.canvas.width = myCan.width;
@@ -243,8 +291,8 @@ $(document).ready(function() {
 
         let tempX = e.pageX;
         let tempY = e.pageY;
-        let scrollX = $('#img-contain').scrollLeft();
-        let scrollY = $('#img-contain').scrollTop();
+        let scrollX = $('#page-contain').scrollLeft();
+        let scrollY = $('#page-contain').scrollTop();
         let iX = scrollX + tempX - 40;
         let iY = scrollY + tempY - 40;
         var imgX = Math.ceil(iX / 25) * 25;
@@ -345,19 +393,8 @@ $(document).ready(function() {
             }, 1000);
         }
 
-        if (initDecay2) {
-            // colorHover('#img2', 920, 655);
-        }
-        // colorHover('#img6', 1175, 300);
-        colorHover('#chaneysegura', 850, 1300);
         colorHover('#near-sight-text', 630, 690);
         colorHover('#hear', 1330, 680);
-
-        // colorHover('#earglow', 1320, 685);
-        // colorHover('#earglow2', 1330, 655);
-        // colorHover('#img3', 1250, 975);
-        // colorHover('#img5', 1375, 650);
-        // colorHover('#img4', 0, 0);
 
     });
 
@@ -366,10 +403,15 @@ $(document).ready(function() {
     let stopText = false;
 
     $(document).on('mousemove', function(e) {
+
+        if (damp < 2650) {
+            damp = 2650;
+        }
+
         let tempX = e.pageX;
         let tempY = e.pageY;
-        let scrollX = $('#img-contain').scrollLeft();
-        let scrollY = $('#img-contain').scrollTop();
+        let scrollX = $('#page-contain').scrollLeft();
+        let scrollY = $('#page-contain').scrollTop();
         let iX = scrollX + tempX;
         let iY = scrollY + tempY;
         let mouseRangeX = 1450 - iX;
@@ -379,87 +421,18 @@ $(document).ready(function() {
         let range = (rangeX + rangeY) / 2;
         range < 0 ? range = 0 : range;
 
-        // $('#glow1').css({
-        //     'box-shadow': '0px 0px ' + (range - 80) + 'px ' + (range - 70) + 'px ' + 'white',
-        //     'opacity': (range / 100)
-        // });
-
         if ($('#about-text-holder').data('text') === 'active' && !stopText) {
-            console.log($('#about-text-holder').data('text'), stopText);
             stopText = true;
             $('#about-text-holder').data('text', 'inactive');
             typeAbout();
         }
-
     })
 
-    // document.onmousemove = getMouseXY;
-    document.getElementById('img').onmousemove = getMouseXY;
-    var tempX = 0;
-    var tempY = 0;
-    var dataIndex;
-    let redIndex;
-    let count = 0;
-
-    function getMouseXY(e) {
-        tempX = e.pageX;
-        tempY = e.pageY;
-
-        if (tempX < 0) {
-            tempX = 0
-        };
-        if (tempY < 0) {
-            tempY = 0
-        };
-        let adjustedX = Math.round((tempX * myCan.canvas.width) / screen.width);
-        let adjustedY = Math.round((tempY * myCan.canvas.height) / window.outerHeight);
-        dataIndex = (adjustedX * 4) + (adjustedY * myCan.canvas.width * 4);
-
-        var pixelData = myCan.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
-        if (pixelData[0] > 225 && pixelData[1] > 210 && pixelData[2] < 100) {
-            $('#glow').css({
-                'box-shadow': '0px 0px 100px 40px rgb(241, 255, 173)'
-            })
-        } else {
-            $('#glow').css({
-                'box-shadow': '0px 0px 0px 0px white'
-            });
-        }
-    }
-
-    let dataRetrieved = false;
-
-    $('#img').mousemove(function(e) {
-
-        function Coordinates(topLeft, topLeft2, topRight, topRight2, bottomRight, bottomRight2, bottomLeft, bottomLeft2) {
-            this.topLeft = [topLeft, topLeft2];
-            this.topRight = [topRight, topRight2];
-            this.bottomRight = [bottomRight, bottomRight2];
-            this.bottomLeft = [bottomLeft, bottomLeft2];
-        }
-
-        let bottom = $('#div').offset().top + $('#div').outerHeight();
-        let right = $('#div').offset().left + $('#div').outerWidth();
-
-        let one = new Coordinates($('#div').offset().top,
-            $('#div').offset().left,
-            $('#div').offset().top,
-            right,
-            bottom,
-            right,
-            bottom,
-            $('#div').offset().left);
-        coordHolder.push(one);
-    });
-
-    function rgbToHex(r, g, b) {
-        if (r > 255 || g > 255 || b > 255)
-            throw "Invalid color component";
-        return ((r << 16) | (g << 8) | b).toString(16);
-    }
-
+    let page = document.getElementById('page-contain');
     let pxRatioH = 1;
-    let pxRatioW = (window.outerWidth / myCan.canvas.width) * 1.9;
+    // let pxRatioH = (window.outerHeight / page.height) * 1.9;
+    let pxRatioW = (window.outerWidth / page.width) * 1.9;
+    // let pxRatioW = (window.outerWidth / myCan.canvas.width) * 1.9;
     let gainNode;
     let gainNode2;
     let gainArr = [gainNode, gainNode2];
@@ -467,7 +440,6 @@ $(document).ready(function() {
     let mousedown = false;
 
     var list = ['./audio/baseriff.mp3', './audio/highpitch.mp3'] //array containing list of music sources
-    // var list = ['./audio/highpitch.mp3'] //array containing list of music sources
     var playListBuffer = new Array(); //array to put in all decoded audio
     var playList = new Array();
     var context = new AudioContext();
@@ -534,19 +506,19 @@ $(document).ready(function() {
     let yReturn;
     let average;
 
-    let marker1 = [parseInt(parseInt($('#marker1').css('margin-left')) * pxRatioW), parseInt(parseInt($('#marker1').css('margin-top')) * pxRatioH)];
-    let marker2 = [parseInt(parseInt($('#ear-circle').css('margin-left')) * pxRatioW), parseInt(parseInt($('#ear-circle').css('margin-top')) * pxRatioH)];
+    let marker1 = [parseInt(parseInt($('#about-hover').css('margin-left')) * pxRatioW), parseInt(parseInt($('#about-hover').css('margin-top')) * pxRatioH)];
+    let marker2 = [parseInt(parseInt($('#ear-hover').css('margin-left')) * pxRatioW), parseInt(parseInt($('#ear-hover').css('margin-top')) * pxRatioH)];
 
     var calculateGain = function(mouseYPosition, mouseXPosition, markerArr) {
 
-        marker1 = [parseInt(parseInt($('#marker1').css('margin-left')) * pxRatioW), parseInt(parseInt($('#marker1').css('margin-top')) * pxRatioH)];
-        marker2 = [parseInt(parseInt($('#ear-circle').css('margin-left')) * pxRatioW), parseInt(parseInt($('#ear-circle').css('margin-top')) * pxRatioH)];
+        marker1 = [parseInt(parseInt($('#about-hover').css('margin-left')) * pxRatioW), parseInt(parseInt($('#about-hover').css('margin-top')) * pxRatioH)];
+        marker2 = [parseInt(parseInt($('#ear-hover').css('margin-left')) * pxRatioW), parseInt(parseInt($('#ear-hover').css('margin-top')) * pxRatioH)];
 
         var minGain = 0,
             maxGain = 1;
 
-        mouseXPosition = mouseXPosition + $('#img-contain').scrollLeft() + 1;
-        mouseYPosition = mouseYPosition + $('#img-contain').scrollTop() - 30;
+        mouseXPosition = mouseXPosition + $('#page-contain').scrollLeft() + 1;
+        mouseYPosition = mouseYPosition + $('#page-contain').scrollTop() - 30;
 
         if (mouseYPosition > (markerArr[1] - 400) && mouseYPosition < (markerArr[1] + 400)) {
             if (mouseYPosition <= markerArr[1]) {
@@ -568,7 +540,6 @@ $(document).ready(function() {
             return 0;
         }
 
-
         //controls range of gain
         average = ((xReturn / 2 + yReturn / 2) / 3);
 
@@ -583,9 +554,11 @@ $(document).ready(function() {
     };
 
     let returnScreen = () => {
+        removeBackgroundBlooms();
+        $('#bio-text, .p-contain').css({'pointer-events': 'auto'});
         $('#eye-hover, #eye-circle').css({'pointer-events': 'auto'});
         $('.blooming-menu__container').css('opacity', '0');
-        $('#img-contain').css({'filter': 'brightness(1)'});
+        $('#page-contain').css({'filter': 'brightness(1)'});
         bloomingMenu.close();
         $('#info-table').css({
             'opacity': '0',
@@ -610,7 +583,7 @@ $(document).ready(function() {
     }
 
     let toggleClasses = () => {
-        $('#img-contain').toggleClass('scale');
+        $('#page-contain').toggleClass('scale');
         $('.abs').toggleClass('scale-ui');
         $('.absR').toggleClass('scale-ui2');
         $('.inner-block').toggleClass('opacity');
@@ -621,16 +594,25 @@ $(document).ready(function() {
     const scrollAmount = (x, y) => {
         scrollTransition = true;
         bloomToggle = !bloomToggle;
-        $('#img-contain').css({'filter': 'brightness(1)'});
-        $('#img-contain').animate({
-            scrollTop: y,
+        removeBackgroundBlooms();
+        $('#dark-half').css({'transition': 'all .5s ease', 'opacity': '1'});
+        setTimeout(()=>{
+            $('#dark-half').css({'transition': 'all 2s ease'});
+        }, 10);
+        $('#page-contain').css({'filter': 'brightness(1)'});
+        $('.img-contain').animate({
             scrollLeft: x
         }, 1500, function() {
-            posX = container.scrollLeft/ 15;
-            posY = container.scrollTop/ 3.45;
+            posX = containerX.scrollLeft/ 15;
             scrollTransition = false;
-            damp = 2500;
+            damp = 5500;
             initDamp();
+        });
+        $('#page-contain').animate({
+            scrollTop: y
+        }, 1500, function() {
+            console.log(containerY.scrollTop/ 22.22);
+            posY = containerY.scrollTop/ 22.22;
         });
             toggle = !toggle;
             returnScreen();
@@ -655,24 +637,41 @@ $(document).ready(function() {
         }
     });
 
+    const backgroundURLS = ['url(./images/manlying4THUMB.png)', 'url(./images/teen2s32THUMB.png)', 'url(./images/uncanny2THUMB.png)', 'url(./images/man2THUMB.png)'];
+
+    const removeBackgroundBlooms = () => {
+        $('.blooming-menu__item-btn-wrapper').each(function(index) {
+            $(this).css({'background': 'none'});
+        })
+    }
+
     $(document).on('click', 'button.blooming-menu__main', function(e) {
         bloomToggle = !bloomToggle;
-        console.log('bloom');
         if (bloomToggle) {
-            console.log('bloom2');
-            $('#img-contain').css({'filter': 'brightness(0.75)'});
+            $('#page-contain').css({'filter': 'brightness(0.75)'});
+            $('.blooming-menu__item-btn-wrapper').each(function(index) {
+                setTimeout(()=>{
+                    $(this).css({'background': backgroundURLS[index], 'background-size': 'cover', 'opacity': '1'});
+                }, 250);
+            })
         } else {
-            $('#img-contain').css({'filter': 'brightness(1)'});
+            $('.blooming-menu__item-btn-wrapper').css({'opacity': '0'});
+            $('#page-contain').css({'filter': 'brightness(1)'});
+            removeBackgroundBlooms();
         }
     });
 
     bloomingMenu.render();
     $('.blooming-menu__container').css('opacity', '0');
+    $('.blooming-menu__item').css({'border': '1px solid white', 'border-radius': '50%', 'opacity': '1'});
+    $('.blooming-menu__item-btn-wrapper').css({'opacity': '0', 'transition': 'all 2s ease'});
 
     const switchView = () => {
         toggle = !toggle;
         if (toggle) {
-            clearInterval(initWait);
+            // clearInterval(initWait);
+            stopInt();
+            $('#bio-text, .p-contain').css({'pointer-events': 'none'});
             $('#eye-hover, #eye-circle').css({'pointer-events': 'none'});
             $('.blooming-menu__container').css('opacity', '1');
             $('#info-table').css({
@@ -686,6 +685,7 @@ $(document).ready(function() {
             $('.abs').css({
                 'transition': 'all .75s ease'
             });
+
             let volCount = 1;
             let lowerVolume = setInterval(() => {
                 volCount = volCount - .005;
@@ -694,9 +694,11 @@ $(document).ready(function() {
                     clearInterval(lowerVolume);
                 }
             }, 1);
-            damp = 3500;
+            damp = 5500;
         } else {
-            damp = 1650;
+            bloomToggle = !bloomToggle;
+            damp = 2650;
+
             returnScreen();
         }
         toggleClasses();
@@ -713,12 +715,16 @@ $(document).ready(function() {
         switchView();
     });
 
+    $(document).on('click', 'div#return-button', () => {
+        switchView();
+    });
+
     document.body.addEventListener('mousedown', function(e) {
         mousedown = true;
         let tempX = e.pageX;
         let tempY = e.pageY;
-        let scrollX = $('#img-contain').scrollLeft();
-        let scrollY = $('#img-contain').scrollTop();
+        let scrollX = $('#page-contain').scrollLeft();
+        let scrollY = $('#page-contain').scrollTop();
         let iX = scrollX + tempX - 40;
         let iY = scrollY + tempY - 40;
         var imgX = Math.ceil(iX / 75) * 75;
@@ -752,8 +758,6 @@ $(document).ready(function() {
 
     document.body.addEventListener('mouseup', function() {
         mousedown = false;
-        // audio.pause();
-        // source.stop(0);
     });
 
     document.body.addEventListener('mousemove', function(e) {
@@ -762,343 +766,74 @@ $(document).ready(function() {
             gainArr[0].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker1), context.currentTime, .5);
             gainArr[1].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker2), context.currentTime, .5);
         }
-
     });
 
     let countDown = 10;
 
-    // let pixelInt = setInterval(function() {
+    let direction = "";
+    let oldy = 0;
 
-    // $(document).on('mouseover', function() {
-    // $(document).on('click', function(e) {
-    //
-    //     // console.log('moused');
-    //     var grabSection = myCan.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 50, 50);
-    //     console.log(grabSection);
-    //     let reImage = imagedata_to_image(grabSection, e);
-    //     console.log(reImage);
-    //
-    //
-    //     setTimeout(() => {
-    //         let pX = e.pageX;
-    //         let pY = e.pageY;
-    //         let adjustedX = Math.round((pX * myCan.canvas.width) / screen.width);
-    //         let adjustedY = Math.round((pY * myCan.canvas.height) / window.outerHeight);
-    //         console.log(adjustedX);
-    //         console.log(adjustedY);
-    //             console.log(pX, pY);
-    //             // $('.crop-image').offset().left = adjustedX;
-    //             // $('.crop-image').offset().top = adjustedY;
-    //             $('.crop-image').css({'margin-top': adjustedY + 100 + 'px','margin-left': adjustedX + 'px'});
-    //             // $('.crop-image').offset({top:adjustedY,left:adjustedY});
-    //             // console.log($('.crop-image').offset().left);
-    //      }, 10);
-    //
-    //
-    //         window.onload = function () {
-    //
-    //     // setTimeout(function() {
-    //         var myPixelation = new ClosePixelation( reImage [
-    //             { shape: 'diamond', resolution: 98, size: 200, offset: 0, alpha: 0.991 },
-    //             { shape: 'circle', resolution: 20, size: 19, offset: 0, alpha: 0.991 }
-    //         ]);
-    //
-    //         };
-    //
-    //     });
-    //     function imagedata_to_image(imagedata, e) {
-    //         var canvas2 = document.createElement('canvas');
-    //         var ctx = canvas2.getContext('2d');
-    //         canvas2.width = imagedata.width;
-    //         canvas2.height = imagedata.height;
-    //         ctx.putImageData(imagedata, 0, 0);
-    //
-    //
-    //         var image = document.createElement("img");
-    //         // image.setAttribute('id', 'crop-image');
-    //         image.className = 'crop-image';
-    //         image.src = canvas2.toDataURL();
-    //         $('#img-contain').append(image);
-    //         return image;
-    //     }
-    //
-    //     $('#vert-line').on('mouseenter', function() {
-    //         $(this).css({
-    //             'box-shadow': '0px 0px 500px 50px red'
-    //         })
-    //     }).on('mouseleave', function () {
-    //         $(this).css({
-    //             'box-shadow': '0px 0px 0px 0px red'
-    //         })
-    //     });
+    let mousemovemethod = function(e) {
 
+        if (e.pageY < oldy) {
+            direction = "up";
+        } else if (e.pageY > oldy) {
+            direction = "down";
+        }
 
+        oldy = e.pageY;
+    }
 
+    document.onmousemove = mousemovemethod;
 
+    $('.p-contain').on('mouseenter', function() {
+        if (finishedAudioAnimate) {
+            $(this).children().css({'transition': 'all .5s ease', 'height' : '30px', 'opacity': '1'});
+        }
+    });
 
-
-
-
-
-    // }, 1000);
-
-    // let stopPix = () => {
-    //     clearInterval(pixelInt);
-    // }
-
-    // var img = document.getElementById('pixel-img');
-    // // create a new Close Pixelation instance with ClosePixelation
-    // // requires two arguments: the original image element
-    // // and an array of options
-    // var myPixelation = new ClosePixelation( img, [
-    //     { shape: 'diamond', resolution: 98, size: 200, offset: 0, alpha: 0.991 },
-    //     { shape: 'circle', resolution: 20, size: 19, offset: 0, alpha: 0.991 }
-    // ]);
-    // let res = 98;
-    // let res2 = 20;
-    // let percent = 1;
-
-
-    // let size =
-    // let pixelInt = setInterval(function() {
-    //     myPixelation.render([
-    //         { resolution: 98*percent, size: 200*percent, offset: 0*percent, alpha: 0.991 },
-    //         { resolution: 20*percent, size: 19*percent, offset: 0*percent, alpha: 0.991 }
-    //     ]);
-    //     // res++;
-    //     // res2++;
-    //     percent = percent - .1;
-    //     console.log(percent);
-    //
-    //     if (percent < .0001) {
-    //         stopPix();
-    //     }
-    // }, 1000);
-    //
-    // let stopPix = () => {
-    //     clearInterval(pixelInt);
-    // }
-    // re-render the canvas with different options
-
-    // // render a single option-set on top
-    // myPixelation.renderClosePixels({
-    //   resolution: 48, alpha: 0.5
-    // });
-
-
-
-
-
-
-    //
-    // // Node Constructor
-    // function Node(x, y) {
-    //   this.targX = this.ogX = this.x = x;
-    //   this.targY = this.ogY = this.y = y;
-    // }
-    // Node.prototype.update = function(ev, threshold) {
-    //   if (Math.sqrt(Math.pow(this.ogX - ev.mousePos.x, 2) + Math.pow(this.ogY -ev.mousePos.y, 2)) < threshold) {
-    //     var angle = Math.atan2(this.x - ev.mousePos.x, this.y - ev.mousePos.y) - Math.PI / 2;
-    //     this.targX = this.ogX + (Math.cos(angle) * threshold);
-    //     this.targY = this.ogY + (Math.sin(-angle) * threshold);
-    //   } else {
-    //     this.targX = this.ogX;
-    //     this.targY = this.ogY;
-    //   }
-    //
-    //   this.x += (this.targX - this.x) * 0.045;
-    //   this.y += (this.targY - this.y) * 0.045;
-    // };
-    //
-    // Node.prototype.render = function(ctx) {
-    //   ctx.save();
-    //   ctx.fillStyle = 'transparent';
-    //   ctx.strokeStyle = 'white';
-    //   ctx.beginPath();
-    //   ctx.lineWidth = 0;
-    //   ctx.arc(this.x, this.y, 2, 0, 2 * Math.PI, true);
-    //   ctx.fill();
-    //   ctx.stroke();
-    //   ctx.restore();
-    // };
-    //
-    // // Node Manager Constructor
-    // function NodeManager(n, dw, dh, threshold) {
-    //   this.n = n; // Dimensions of field
-    //   this.dw = dw; // Horizontal distance between nodes
-    //   this.dh = dh; // Vertical distance between nodes
-    //   this.threshold = threshold;
-    //   this.nodes = [];
-    //   for(var i = 0; i < n; i++) {
-    //     this.nodes.push([]);
-    //     for(var j = 0; j < n; j++) {
-    //       this.nodes[i].push(new Node((i * dw) + (dw / 2), (j * dh) + (dh / 2)));
-    //     }
-    //   }
-    // }
-    // NodeManager.prototype.update = function(ev) {
-    //   var that = this;
-    //   this.nodes.forEach(function(row) {
-    //     row.forEach(function(node) {
-    //       node.update(ev, that.threshold);
-    //     });
-    //   });
-    // };
-    // NodeManager.prototype.render = function(ctx) {
-    //   this.nodes.forEach(function(row) {
-    //     row.forEach(function(node) {
-    //       node.render(ctx);
-    //     });
-    //   });
-    // };
-    // NodeManager.prototype.renderLines = function(ctx) {
-    //   ctx.save();
-    //   ctx.strokeStyle = 'white';
-    //   ctx.lineWidth = 1;
-    //   ctx.beginPath();
-    //   for(var i = 0; i < this.n; i++) {
-    //     for(var j = 0; j < this.n; j++) {
-    //       ctx.moveTo(this.nodes[i][j].x, this.nodes[i][j].y);
-    //       try { ctx.lineTo(this.nodes[i + 1][j].x, this.nodes[i + 1][j].y); }
-    //       catch(e) { }
-    //       ctx.moveTo(this.nodes[i][j].x, this.nodes[i][j].y);
-    //       try { ctx.lineTo(this.nodes[i][j + 1].x, this.nodes[i][j + 1].y); }
-    //       catch(e) { }
-    //     }
-    //   }
-    //   ctx.stroke();
-    //   ctx.restore();
-    //
-    // };
-    //
-    // // Event Manager Constructor
-    // function EventManager() {
-    //   this.mousePos = {
-    //     x: NaN,
-    //     y: NaN
-    //   };
-    //
-    //   var that = this;
-    //
-    //   window.onmousemove = function(e) {
-    //     that.mousePos.x = e.clientX;
-    //     that.mousePos.y = e.clientY;
-    //   };
-    // };
-    //
-    // // Demo
-    // // ===========
-    //
-    // // Event Manager
-    // var ev = new EventManager();
-    //
-    // // Node initialization
-    // var n = 35; // Size of field
-    // var nm = new NodeManager(n, myCan.canvas.width / n, myCan.canvas.height / n, 105);
-    //
-    // // Canvas initialization
-    // var canvas = document.createElement('canvas');
-    // let imgCan = document.getElementById('img-contain');
-    // canvas.width = myCan.canvas.width;
-    // canvas.height = myCan.canvas.height;
-    // canvas.setAttribute('id', 'grid');
-    // imgCan.appendChild(canvas);
-    // var ctx = canvas.getContext('2d');
-    // ctx.globalAlpha = 0.5;
-    //
-    // requestAnimationFrame(frame = function() {
-    //   // Inefficiently clear the canvas.... lol
-    //
-    //   ctx.save();
-    //   ctx.fillStyle = 'transparent';
-    //   ctx.fillRect(0, 0, canvas.width, canvas.height);
-    //   ctx.restore();
-    //
-    //   // Update and render nodes
-    //   nm.update(ev);
-    //   nm.render(ctx);
-    //   nm.renderLines(ctx);
-    //   requestAnimationFrame(frame);
-    // });
-    // var pixImg = document.getElementById('pixel-img');
-    //
-    // setTimeout(function() {
-    //     var myPixelation = new ClosePixelation( pixImg [
-    //                 { shape: 'diamond', resolution: 98, size: 200, offset: 0, alpha: 0.991 },
-    //                 { shape: 'circle', resolution: 20, size: 19, offset: 0, alpha: 0.991 }
-    //             ]);
-    //         }, 1000);
-
-
-
-
-
-
-
-
-
-    // var img = document.getElementById('img');
-    //
-    // var myPixelation = new ClosePixelation( img, [
-    //     { shape: 'diamond', resolution: 98, size: 200, offset: 0, alpha: 0.991 },
-    //     { shape: 'circle', resolution: 20, size: 19, offset: 0, alpha: 0.991 }
-    // ]);
-    // $(document).one('click', function() {
-    //     myPixelation.render([
-    //         { shape: 'diamond', resolution: 50, size: 200, offset: 0, alpha: 0.991 },
-    //         { shape: 'circle', resolution: 10, size: 19, offset: 0, alpha: 0.991 }
-    //     ]);
-    // })
-
-    // var context2 = new AudioContext();
-    // var context = new AudioContext(),
-    //     mousedown = false,
-    //     oscillator,
-    //     gainNode,
-    //     gainNode2;
-    // var audio = document.getElementById("audio");
-    // var source, source2;
-    // var stream;
-    // var soundSource, concertHallBuffer;
-    // var FilterSample = {
-    //     FREQ_MUL: 7000,
-    //     QUAL_MUL: 30,
-    //     playing: false
-    // };
-    // let soundBuffer;
-    //
-    // let request = new XMLHttpRequest();
-    // request.open('GET', './audio/baseriff.mp3', true);
-    // request.responseType = 'arraybuffer';
-    //
-    // request.onload = function() {
-    //     context.decodeAudioData(request.response, function(buffer) {
-    //         soundBuffer = buffer;
-    //         document.body.addEventListener('mouseover', function(e) {
-    //             FilterSample.play(soundBuffer);
-    //         });
-    //     });
-    // }
-    // request.send();
-    //
-    // gainNode = context.createGain();
-    // gainNode2 = context2.createGain();
-    // gainNode.gain.value = 0;
-    // gainNode2.gain.value = 0;
-    //
-    // FilterSample.play = function(buffer) {
-    //     source = context.createBufferSource();
-    //     source.buffer = buffer;
-    //     gainNode = context.createGain();
-    //     gainNode.gain.value = 0;
-    //     source.connect(gainNode);
-    //     gainNode.connect(context.destination);
-    //     source.start(0);
-    //     source.loop = true;
-    // }
-
-
-
-
+    $('.p-contain').on('mouseleave', function() {
+        if (finishedAudioAnimate) {
+            if (direction === 'down') {
+                $(this).children().css({'transition': 'all 0s ease', 'opacity': '1'});
+                setTimeout(()=>{
+                    $(this).children().css({'transition': 'all .5s ease', 'height' : '30px'});
+                    setTimeout(()=>{
+                        $(this).next().children().css({'transition': 'all 0s ease', 'opacity': '1'});
+                        setTimeout(()=>{
+                            $(this).next().children().css({'transition': 'all .5s ease', 'height' : '30px'});
+                        }, 500);
+                    }, 200);
+                }, 10);
+                // $(this).children().css({'transition': 'all .5s ease', 'height' : '0px'});
+                // setTimeout(()=>{
+                //     $(this).children().css({'opacity': '0'});
+                //     $(this).next().children().css({'transition': 'all .5s ease', 'height' : '0px'});
+                //     setTimeout(()=>{
+                //         $(this).next().children().css({'opacity': '0'});
+                //     }, 500);
+                // }, 200);
+            } else {
+                $(this).children().css({'transition': 'all .5s ease', 'height' : '0px'});
+                setTimeout(()=>{
+                    $(this).children().css({'opacity': '0'});
+                    $(this).prev().children().css({'transition': 'all .5s ease', 'height' : '0px'});
+                    setTimeout(()=>{
+                        $(this).prev().children().css({'opacity': '0'});
+                    }, 500);
+                }, 200);
+                // $(this).children().css({'transition': 'all 0s ease', 'opacity': '1'});
+                // setTimeout(()=>{
+                //     $(this).children().css({'transition': 'all .5s ease', 'height' : '30px'});
+                //     setTimeout(()=>{
+                //         $(this).prev().children().css({'transition': 'all 0s ease', 'opacity': '1'});
+                //         setTimeout(()=>{
+                //             $(this).prev().children().css({'transition': 'all .5s ease', 'height' : '30px'});
+                //         }, 500);
+                //     }, 200);
+                // }, 10);
+            }
+        }
+    })
 
 });

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
     	<link rel="stylesheet" href="/css/reset.css" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Geostar+Fill|Montserrat+Subrayada|Revalia|Warnes|Yantramanav:900|Syncopate:700|Bungee+Hairline|Orbitron" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Geostar+Fill|Montserrat+Subrayada|Chathura|Dorsa|Geo|Italiana|Megrim|Scheherazade|Share+Tech+Mono|Biryani|Italiana|Revalia|Warnes|Yantramanav:900|Syncopate:700|Bungee+Hairline|Orbitron" rel="stylesheet">
         <link rel="stylesheet" href="/sass/style.min.css" type="text/css">
         <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -19,115 +19,126 @@
         <div id="app"></div>
 
         <!-- <img id="pixel-img" src="./images/32.jpg"> -->
+            <div id="page-contain" width="9792" height="3460">
+                <!-- <img id="img-wrap" width="9792" height="3460"> -->
+                <div class="row-contain" width="9792" height="1730">
+                    <div id="img-contain1" class="img-contain">
 
-            <div id="img-contain">
+                        <img id="img" class="lazy" data-original="./images/manlyingFadeBot.png" width="2448" height="1730">
+                        <img id="cv" src="./images/manlying4CV.png" width="2448" height="1730">
+                        <!-- <img id="img-masc" class=" imgs lazy" data-original="./images/new_man4SM4.png" width="2448" height="1730"> -->
+                        <!-- <img id="top-back2" class="top-row imgs" src="./images/new_man4SM2.png" width="2448" height="1730"> -->
+                        <img id="twins" class="top-row imgs" src="./images/teen2s34.png" width="2448" height="1730">
+                        <img id="face2" class="imgs lazy" src="./images/uncanny2.png" width="2448" height="1730">
+                        <img id="sculpt" class="imgs lazy" src="./images/man2.png" width="2448" height="1730">
+                        <img id="masc-face" class="imgs lazy" src="./images/new_man3.png" width="2448" height="1730">
 
+                        <canvas id="tattooCanvas" width="2448" height="1730"></canvas>
 
-                <!-- <img id="img" class="imgs" src="./images/collage.jpg"> -->
-                <!-- <img id="img" class="lazy" src="./images/mars.jpg" width="12818" height="1730"> -->
-                <img id="img" class="lazy" data-original="./images/manlying4.jpg" width="2448" height="1730">
-                <img id="twins" class="imgs lazy" src="./images/teen2s2.png" width="2448" height="1730">
-                <img id="face2" class="imgs lazy" src="./images/uncanny2.png" width="2448" height="1730">
-                <img id="sculpt" class="imgs lazy" src="./images/man2.png" width="2448" height="1730">
+                        <!-- hovers -->
+                        <img id="img-oil" class="lazy" src="./images/manlyingoil2hair.png" width="2448" height="1730">
+                        <img id="dark-half" class="color-hover" src="./images/manlyingDarkRight.png" width="2448" height="1730">
+                        <img id="img2" class="color-hover" src="./images/manlying4BWback5.png" width="2448" height="1730">
+                        <!-- <img id="img2" class="color-hover" src="./images/new_man3BLUR.png" width="2448" height="1730"> -->
 
-                <div id=marker1>
-                    <div id="near-sight-text">About</div>
-                </div>
+                        <!-- <img id="img2" class="color-hover" src="./images/manlying3.png" width="2448" height="1730"> -->
+                        <!-- <img id="img6" class="color-hover" src="./images/manlying4hair.png" width="2448" height="1730"> -->
+                        <!-- <img id="chaneysegura" class="color-hover" src="./images/chaneyseguraCrop.png" width="400" height="42"> -->
 
-                <canvas id="tattooCanvas" width="2448" height="1730"></canvas>
+                        <h1 id="chaneysegura" class="color-hover">CHANEY-SEGURA</h1>
 
-                <!-- <img id="img2" class="color-hover" src="./images/manlying3.png" width="2448" height="1730"> -->
-                <img id="img2" class="color-hover" src="./images/manlying4BWback5.png" width="2448" height="1730">
-                <!-- <img id="img6" class="color-hover" src="./images/manlying4hair.png" width="2448" height="1730"> -->
-                <img id="chaneysegura" class="color-hover" src="./images/chaneysegura.png" width="2448" height="1730">
-
-                <!-- <img id="img2" class="color-hover" src="./images/man2eye4.png" width="2448" height="1730"> -->
-                <!-- <img id="earglow" class="color-hover" src="./images/earglow.png" width="2448" height="1730">
-                <img id="earglow2" class="color-hover" src="./images/earglow2.png" width="2448" height="1730">
-                <img id="earglow3" class="color-hover" src="./images/flare1.png" width="2448" height="1730"> -->
-                <!-- <img id="img3" class="color-hover" src="./images/man2mouth3.png" width="2448" height="1730"> -->
-                <!-- <img id="img4" class="color-hover" src="./images/man2halfBW.png" width="2448" height="1730"> -->
-                <!-- <img id="img5" class="color-hover" src="./images/man2eye_right2.png" width="2448" height="1730"> -->
-                <!-- <img id="img5" class="color-hover" src="./images/man2grain.png" width="2448" height="1730"> -->
-                <!-- <img id="img6" class="color-hover" src="./images/man2hair.png" width="2448" height="1730"> -->
-
-                <!-- <div class='o'></div> -->
-                <!-- <div class="outter">
-                    <div class="inner"></div>
-                </div> -->
-
-             <div class="triangle">
-                    <div class="mask-holder" id="mask-holder">
-                        <svg id="new-svg" width="2448" height="1730"  style="opacity: 1; z-index: 4; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                          <defs>
-                            <clipPath id="image">
-                            </clipPath>
-                          </defs>
-                         <!-- <image id="mask-img" xlink:href="../images/man2.jpg" src="../images/beach2crop.jpg" clip-path="url(#image)"/> -->
-                       </svg>
+                        <div class="triangle">
+                            <div class="mask-holder" id="mask-holder">
+                                <svg id="new-svg" width="2448" height="1730"  style="opacity: 1; z-index: 4; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                                  <defs>
+                                    <clipPath id="image">
+                                    </clipPath>
+                                  </defs>
+                                 <!-- <image id="mask-img" xlink:href="../images/man2.jpg" src="../images/beach2crop.jpg" clip-path="url(#image)"/> -->
+                               </svg>
+                            </div>
+                        </div>
+                        <!-- <div id="bloom-contain"></div> -->
+                        <!-- <div id="glow-contain">
+                          <div id="glow1" class="glow"></div>
+                          <div id="glow2" class="glow"></div>
+                          <div id="glow3" class="glow"></div>
+                        </div> -->
+                              <!-- <div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div> -->
+                        <div id=about-hover>
+                          <div id="near-sight-text">About</div>
+                        </div>
+                        <div id="eye-hover">
+                            <div id="eye-circle">
+                                <div id="look">view</div>
+                            </div>
+                        </div>
+                        <div id="ear-hover">
+                            <div id="hear" data-activate="incomplete">listen</div>
+                        </div>
+                        <div id="head-hover">
+                            <div id="z">z</div>
+                        </div>
+                        <div id="about-text-holder" data-text="inactive">
+                            <div id="text1" class="about-text"></div>
+                            <div id="text2" class="about-text"></div>
+                            <div id="text3" class="about-text"></div>
+                        </div>
+                        <!-- <div class="element" data-type="typed"></div> -->
+                        <div id="bio-text">
+                            <div class="p-contain">
+                                <p class="left-text lead">Patrick Segura is a web developer - conceptually driven by untuitive design, modular structures, and alternative modes of </p>
+                            </div>
+                            <div class="p-contain">
+                                <p class="right-text lead">interactivity/connectivity. He is also video, performance, sound, and installation artist living in Chicago. He graduated from</p>
+                            </div>
+                            <div class="p-contain">
+                                <p class="left-text lead">Northwestern University in Computer Science, received his MFA in Art and Technology at the School of the Art Institute of Chicago in</p>
+                            </div>
+                            <div class="p-contain">
+                                <p class="right-text lead">2014 and his BFA in Painting from the University of Louisiana at Lafayette in 2011. Dealing with principles of design through research of</p>
+                            </div>
+                            <div class="p-contain">
+                                <p class="left-text lead">the body, play, and virtuality, he draws from his background of gaming to create structures for understanding these ideas and their</p>
+                            </div>
+                            <div class="p-contain">
+                                <p class="right-text lead">relationships. Patrick is a Luminarts Fellow, a Pilotenkueche Resident, as well as a College Art Association Fellow. Patrick has shown</p>
+                            </div>
+                            <div class="p-contain">
+                                <p class="left-text lead">work in the Prospect 2 Biennial, Acadiana Center for the Arts, Sullivan Gallery in Chicago, and Spinnerei Rundgang, Germany.</p>
+                            </div>
+                        </div>
                     </div>
-              </div>
-
-
-              <!-- <div id="bloom-contain"></div> -->
-              <!-- <div id="glow-contain">
-                  <div id="glow1" class="glow"></div>
-                  <div id="glow2" class="glow"></div>
-                  <div id="glow3" class="glow"></div>
-              </div> -->
-
-              <!-- <div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div> -->
-
-          <!-- <div id="eye-circle">
-              <div id="look">view</div>
-              <div id="eye-hover"></div>
-          </div> -->
-            <div id="eye-hover">
-                <div id="eye-circle">
-                    <div id="look">view</div>
                 </div>
-                <!-- <div id="eye-hover2"></div> -->
+
+                <div class="row-contain" width="9792" height="1730">
+                    <div class="img-contain">
+                        <img id="bot-back1" class="bot-row" src="./images/new_man3.png" width="2448" height="1730">
+                        <img id="bot-back2" class="bot-row" src="./images/new_man3.png" width="2448" height="1730">
+                        <img id="bot-back3" class="bot-row" src="./images/new_man3.png" width="2448" height="1730">
+                        <img id="bot-back4" class="bot-row" src="./images/new_man3.png" width="2448" height="1730">
+                    </div>
+                </div>
             </div>
-            <div id="ear-circle">
-                <div id="hear" data-activate="incomplete">listen</div>
-            </div>
-            <div id="head-circle">
-                <div id="z">z</div>
-            </div>
-            <div id="about-text-holder" data-text="inactive">
-                <div id="text1" class="about-text"></div>
-                <div id="text2" class="about-text"></div>
-                <div id="text3" class="about-text"></div>
-                                    <!-- Lorem Ipsum is simply dummy text <br>
-                                    of the printing and typesetting industry. Lorem <br>
-                                    Ipsum has been the industry's standard <br>
-                                    dummy text ever since the 1500s, <br>
-                                    when an unknown printer took a galley of type and <br>
-                                    scrambled it to make a type specimen book. <br>
-                                    It has survived not only five centuries. -->
-                <!-- </div> -->
-            </div>
-            <!-- <div class="element" data-type="typed"></div> -->
-        </div>
-        <div id="ring-holder">
+        <!-- <div id="ring-holder">
             <div id="ring">
                 <span></span>
             </div>
-        </div>
+        </div> -->
         <div id=others>
-            <pre id="output"></pre>
+            <!-- <pre id="output"></pre>
             <pre id="coordinates"></pre>
-            <div id="status"></div>
+            <div id="status"></div> -->
 
-            <div id="status"></div>
-            <div id="ring-holder">
+            <!-- <div id="status"></div> -->
+            <!-- <div id="ring-holder">
                 <div id="ring">
                     <span></span>
                 </div>
-            </div>
-            <div id="div">
+            </div> -->
+            <!-- <div id="div">
                 <div id="glow"></div>
-            </div>
+            </div> -->
             <div id="left-blocks">
                 <div id="uncover" class="abs">
                     <div id="block1" class="inner-block"></div>
@@ -157,27 +168,27 @@
             <div id="right-blocks">
                 <div id="uncover" class="abs absR">
                     <div id="block1" class="inner-block"></div>
-                    <div class="visor visorR lighter"></div>
+                    <!-- <div class="visor visorR lighter"></div> -->
                 </div>
                 <div id="uncover2" class="abs absR">
                     <div id="block1" class="inner-block"></div>
-                    <div class="visor visorR  lighter"></div>
+                    <!-- <div class="visor visorR  lighter"></div> -->
                 </div>
                 <div id="uncover3" class="abs absR">
                     <div id="block1" class="inner-block"></div>
-                    <div class="visor visorR  lighter"></div>
+                    <!-- <div class="visor visorR  lighter"></div> -->
                 </div>
                 <div id="uncover4" class="abs absR">
                     <div id="block1" class="inner-block"></div>
-                    <div class="visor visorR  darker"></div>
+                    <!-- <div class="visor visorR  darker"></div> -->
                 </div>
                 <div id="uncover5" class="abs absR">
                     <div id="block1" class="inner-block"></div>
-                    <div class="visor visorR  lighter"></div>
+                    <!-- <div class="visor visorR  lighter"></div> -->
                 </div>
                 <div id="uncover6" class="abs absR">
                     <div id="block1" class="inner-block"></div>
-                    <div class="visor visorR  darker"></div>
+                    <!-- <div class="visor visorR  darker"></div> -->
                 </div>
             </div>
             <table id="info-table">
@@ -240,6 +251,7 @@
 
     <script src="/js/click_effect.js"></script>
     <script src="/js/bloom.js"></script>
-    <script src="/js/mousemove.js"></script>
     <script src="/js/draw_lines.js"></script>
+    <script src="/js/mousemove.js"></script>
+
 </html>

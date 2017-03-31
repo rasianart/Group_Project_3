@@ -45,8 +45,7 @@ const circle2 = new mojs.Shape({
     className: 'innerCirc'
 });
 
-$(document).on('click', function(e) {
-
+const clickEffect = (e) => {
     circle1
         .tune({
             x: e.pageX,
@@ -59,4 +58,8 @@ $(document).on('click', function(e) {
             y: e.pageY
         })
         .replay();
+}
+
+$(document).on('click', function(e) {
+    clickEffect(e);
 });

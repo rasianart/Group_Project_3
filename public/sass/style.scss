@@ -10,7 +10,7 @@ html {
     -webkit-user-select: none;
 }
 
-.abs:hover, #eye-hover2:hover, #ear-circle:hover, #head-circle:hover {
+.abs:hover, #eye-hover:hover, #ear-hover:hover, #head-hover:hover {
     cursor: url('../images/buttonmouse_click2.png'), default;
 }
 
@@ -50,7 +50,13 @@ body {
     position: absolute;
 }
 
-#img-contain {
+// .row-contain {
+//     position: relative;
+//     float: left;
+//     clear: both;
+// }
+
+#page-contain {
     width: 100%;
     height: 100vh;
     overflow: hidden;
@@ -58,6 +64,27 @@ body {
     background: transparent;
     transition: all 1s ease;
     white-space: nowrap;
+}
+
+.img-contain {
+    width: 100%;
+    height: 1730px;
+    overflow: hidden;
+    position: relative;
+    background: transparent;
+    transition: all 1s ease;
+    white-space: nowrap;
+}
+
+.row-contain {
+    width: 100%;
+    height: 1730px;
+    overflow: hidden;
+    position: relative;
+    background: transparent;
+    transition: all 1s ease;
+    white-space: nowrap;
+    clear: both;
 }
 
 .scale {
@@ -79,7 +106,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 11;
     background-color: transparent;
     opacity: 0;
     height: 24px;
@@ -142,7 +169,7 @@ body {
     height: 30px;
     background-color: white;
     opacity: 0;
-    transition: all 1.5s ease;
+    transition: all 1s ease;
 }
 
 .lighter {
@@ -221,11 +248,32 @@ th, td {
     margin-top: 130px;
 }
 
+.backgrounds {
+    display: inline-block;
+    overflow: hidden;
+    transition: all 1s ease;
+    transition: transform 1s ease;
+}
+
+.top-row {
+    display: inline-block;
+    overflow: hidden;
+    transition: all 1s ease;
+    transition: transform 1s ease;
+}
+
+
 #img {
     display: inline-block;
     overflow: hidden;
     transition: all 1s ease;
 }
+
+// #img-masc {
+//     filter: contrast(50%);
+//     opacity: 0;
+//     transition: all 4s ease;
+// }
 
 #twins {
     display: inline-block;
@@ -285,7 +333,7 @@ th, td {
     z-index: 3;
 }
 
-#marker1 {
+#about-hover {
     position: absolute;
     top: 0;
     left: 0;
@@ -295,11 +343,11 @@ th, td {
     background-color: transparent;
     box-shadow: 0px 0px 50px 1px rgba(0, 0, 0, .05);
     border: 5px solid white;
-    pointer-events: none;
+    // pointer-events: none;
     margin-left: 850px;
     margin-top: 600px;
     opacity: 0;
-    z-index: 5;
+    z-index: 7;
     transition: all 1s ease;
 }
 
@@ -336,6 +384,77 @@ th, td {
     color: rgba(125, 125, 125, 1);
 }
 
+#bio-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 1540px;
+    margin-top: 455px;
+    opacity: 1;
+    z-index: 7;
+    transition: all 1s ease;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.p-contain {
+    position: relative;
+    margin-top: 20px;
+    height: 30px;
+    width: 1500px;
+    overflow: hidden;
+    z-index: 7;
+    transition: all 1s ease;
+    pointer-events: none;
+}
+
+.lead {
+    color: rgba(0, 0, 0, .5);
+    // color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    height: 30px;
+    opacity: 0;
+    overflow-x: hidden;
+    margin-bottom: 0px;
+    padding-top: 15px;
+    transition: all .5s ease;
+    text-align: center;
+    overflow: hidden;
+}
+
+#return-button {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-left: 665px;
+    margin-top:650px;
+    transition: all 1s ease;
+    z-index: 12;
+    transform: scale(0.5);
+    background: url(../images/headimg.png);
+    border: 1px solid white;
+    filter: invert(100%);
+    opacity: 0;
+}
+
+.raise-lines {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-left: 1750px;
+    margin-top: 1200px;
+    height: 100px;
+    width: 1000px;
+    background: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, .4);
+    transition: all 2.5s ease;
+    z-index: 5;
+}
+
 #mouth-sphere {
     position: absolute;
     top: 0;
@@ -345,26 +464,10 @@ th, td {
     border-radius: 50%;
     background-color: transparent;
     border: 5px solid white;
-    pointer-events: none;
+    // pointer-events: none;
     margin-left: 490px;
     margin-top: 640px;
-    z-index: 5;
-    transition: all 1s ease;
-}
-
-#ear-drop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0px;
-    height: 0px;
-    border-radius: 50%;
-    background-color: transparent;
-    border: 3px solid white;
-    pointer-events: none;
-    margin-left: 1345px;
-    margin-top: 680px;
-    z-index: 5;
+    z-index: 8;
     transition: all 1s ease;
 }
 
@@ -375,6 +478,27 @@ th, td {
     z-index: 3;
     opacity: 0;
     transition: all 2s ease;
+}
+
+
+#img-oil {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    opacity: 0;
+    transition: all 2s ease;
+}
+
+
+#dark-half {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    opacity: 0;
+    // transition: all 2s ease;
+    transition: all .3s ease;
 }
 
 #img3 {
@@ -435,11 +559,49 @@ th, td {
 
 #chaneysegura {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     z-index: 3;
     opacity: 0;
-    height: 0px;
+    height: 65px;
+    width: 400px;
+    margin-left: 600px;
+    // new man margin
+    // margin-left: 730px;
+    margin-bottom: 345px;
+    font-size: 65px;
+    color: #af7c74;
+    // font-family: 'Dorsa', sans-serif;
+    letter-spacing: 50px;
+
+    font-family: 'Megrim', cursive;
+    transition: all 2s ease-in;
+    transform: scale(1, 0);
+    filter: brightness(1.1);
+    // transform: rotate(-1deg);
+    // transform: translateY(-3deg);
+}
+
+#cv {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    opacity: 0;
+    transition: all .3s ease;
+}
+
+#name-cover {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+    opacity: 1;
+    height: 100px;
+    width: 400px;
+    background-color: white;
+    margin-left: 650px;
+    margin-bottom: -679px;
     transition: all 1.5s ease;
 }
 
@@ -482,7 +644,7 @@ th, td {
     opacity: 1;
 }
 
-#ear-circle {
+#ear-hover {
     position: absolute;
     top: 0;
     left: 0;
@@ -497,6 +659,50 @@ th, td {
     transition: all .9s ease;
 }
 
+#ear-drop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0);
+    border: 3px solid white;
+    pointer-events: none;
+    margin-left: 1345px;
+    margin-top: 680px;
+    z-index: 8;
+    transition: all 1s ease;
+}
+
+#ear-text {
+    color: #555;
+    opacity: 1;
+    font-family: 'Orbitron', sans-serif;
+    margin-left: -50px;
+    margin-top: -15px;
+    font-size: 4px;
+    transition: all .5s ease;
+}
+
+#audio-links {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid black;
+    pointer-events: none;
+    margin-left: 1345px;
+    margin-top: 940px;
+    z-index: 8;
+    transition: all 1s ease;
+}
+
 #hear {
     opacity: 0;
     margin-top: 22px;
@@ -507,7 +713,7 @@ th, td {
     font-family: 'Bungee Hairline', cursive;
 }
 
-#head-circle {
+#head-hover {
     position: absolute;
     top: 0;
     left: 0;
@@ -558,6 +764,7 @@ th, td {
     left: 0;
     z-index: 7;
     opacity: 1;
+    transition: all 1s ease;
 }
 
 #ring-holder {
@@ -641,7 +848,7 @@ span{
 .blooming-menu__item-btn-wrapper {
 
     background-color: transparent !important;
-    border: 1px solid white !important;
+    // border: 1px solid white !important;
 }
 
 .o {
@@ -735,11 +942,15 @@ span{
 }
 
 .innerCirc {
-    pointer-events: none
+    pointer-events: none;
+    z-index: 10;
+    // background-color: rgba(0, 0, 0, .5);
 }
 
 .outerCirc {
-    pointer-events: none
+    pointer-events: none;
+    // background-color: rgba(0, 0, 0, .5);
+    z-index: 10;
 }
 
 .mask-holder {
