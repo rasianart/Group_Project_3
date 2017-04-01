@@ -32,6 +32,7 @@ let earDropHover = false;
 let hoverArray = [eyeHover, earHover, headHover, aboutHover];
 let hoverArrayString = ['eye-hover', 'ear-hover', 'head-hover', 'about-hover'];
 let audio = new Audio('../audio/beep.mp3');
+let audio2 = new Audio('../audio/beep2.mp3');
 
 let eyeCoordinateX = parseInt($('#eye-hover').css('margin-left')) + 100;
 let eyeCoordinateY = parseInt($('#eye-hover').css('margin-top')) + 100;
@@ -39,6 +40,7 @@ let aboutCoordinateX = parseInt($('#about-hover').css('margin-left')) + 100;
 let aboutCoordinateY = parseInt($('#about-hover').css('margin-top')) + 100;
 
 audio.volume = .10;
+audio2.volume = .10;
 tattooCtx.strokeStyle = "white";
 tattooCtx.lineWidth = 2;
 
@@ -162,9 +164,6 @@ function handleMouseMove(e) {
 
     isMoved = true;
 
-    // console.log(hoverArray[2]);
-    // hoverArray[2] && clickEffect(e);
-
     if ((!completeAbout || !completeListen || !completeZ) && iX > 900 && iX < 950 && iY > 630 && iY < 670) {
 
         if (!initMenuButton) {
@@ -176,7 +175,7 @@ function handleMouseMove(e) {
         }
         isHover = true;
         if (!onHover) {
-            audio.play()
+            audio.play();
         }
         onHover = true;
     } else {
@@ -305,7 +304,7 @@ function handleMouseMove(e) {
         isHover = false;
         $('#img2').css({'opacity': '0'});
         redrawStoredLines();
-        let earSphere = $('<div id="ear-drop"><p id="ear-text">Audio Links</p></div>').appendTo('#img-contain1');
+        let earSphere = $('<div id="ear-drop"><p id="ear-text">More Info</p></div>').appendTo('#img-contain1');
         $('#hear').data('activate', 'complete');
         completeListen = true;
         enter1 = false;
@@ -364,8 +363,6 @@ function handleMouseMove(e) {
     //connect head
     if (hoverArray[2] && isHover && !isDown && !isToggled) {
 
-        // clickEffect(e);
-
         storedLines.push({
             x1: 940,
             y1: 655,
@@ -380,7 +377,7 @@ function handleMouseMove(e) {
         enter2 = false;
         setTimeout(()=>{
 
-            audio.play();
+            // audio.play();
 
             $('#z').css({
                 'transition': 'all .5s ease',
@@ -508,9 +505,8 @@ const expandAudio = () => {
 
 $(document).on('mouseenter', 'div#z', function(e) {
     clickEffect(e);
-    // setTimeout(()=>{
-        $('#img-oil').css({'transition': 'all .5s ease', 'opacity': '1'});
-    // }, 200);
+    audio2.play();
+    $('#img-oil').css({'transition': 'all .5s ease', 'opacity': '1'});
     setTimeout(()=>{
         $('#img-oil').css({'transition': 'all 6s ease', 'opacity': '0'});
     }, 1500);

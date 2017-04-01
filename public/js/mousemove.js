@@ -26,9 +26,9 @@ $(document).ready(function() {
         'transform': 'scale(1, 1)',
     });
 
-    setTimeout(() => {
-        $('#chaneysegura').css({'transition': 'all 15s ease', 'filter': 'brightness(2)'});
-    }, 5000);
+    // setTimeout(() => {
+    //     $('#chaneysegura').css({'transition': 'all 15s ease', 'filter': 'brightness(2)'});
+    // }, 5000);
 
     $("img.lazy").lazyload({
         threshold: 700,
@@ -93,8 +93,8 @@ $(document).ready(function() {
             });
             $(this).children('.visor').css({
                 'width': '1400px',
-                'height': '23px',
-                'width': '1400px',
+                'height': '36px',
+                'width': '1800px',
                 'opacity': '1'
             });
             $(this).css({
@@ -291,7 +291,7 @@ $(document).ready(function() {
 
         let tempX = e.pageX;
         let tempY = e.pageY;
-        let scrollX = $('#page-contain').scrollLeft();
+        let scrollX = $('.img-contain').scrollLeft();
         let scrollY = $('#page-contain').scrollTop();
         let iX = scrollX + tempX - 40;
         let iY = scrollY + tempY - 40;
@@ -403,7 +403,7 @@ $(document).ready(function() {
     let stopText = false;
 
     $(document).on('mousemove', function(e) {
-
+        // console.log(damp);
         if (damp < 2650) {
             damp = 2650;
         }
@@ -431,8 +431,8 @@ $(document).ready(function() {
     let page = document.getElementById('page-contain');
     let pxRatioH = 1;
     // let pxRatioH = (window.outerHeight / page.height) * 1.9;
-    let pxRatioW = (window.outerWidth / page.width) * 1.9;
-    // let pxRatioW = (window.outerWidth / myCan.canvas.width) * 1.9;
+    // let pxRatioW = (window.outerWidth / page.width) * 1.9;
+    let pxRatioW = (window.outerWidth / myCan.canvas.width) * 1.9;
     let gainNode;
     let gainNode2;
     let gainArr = [gainNode, gainNode2];
@@ -506,18 +506,17 @@ $(document).ready(function() {
     let yReturn;
     let average;
 
-    let marker1 = [parseInt(parseInt($('#about-hover').css('margin-left')) * pxRatioW), parseInt(parseInt($('#about-hover').css('margin-top')) * pxRatioH)];
-    let marker2 = [parseInt(parseInt($('#ear-hover').css('margin-left')) * pxRatioW), parseInt(parseInt($('#ear-hover').css('margin-top')) * pxRatioH)];
+    let marker1 = [parseInt(parseInt($('#about-hover').css('margin-left')) * pxRatioW - 400), parseInt(parseInt($('#about-hover').css('margin-top')) * pxRatioH)];
+    let marker2 = [parseInt(parseInt($('#ear-hover').css('margin-left')) * pxRatioW + 400), parseInt(parseInt($('#ear-hover').css('margin-top')) * pxRatioH)];
+    console.log(marker1[0], marker1[1]);
+    console.log(marker2[0], marker2[1]);
 
     var calculateGain = function(mouseYPosition, mouseXPosition, markerArr) {
-
-        marker1 = [parseInt(parseInt($('#about-hover').css('margin-left')) * pxRatioW), parseInt(parseInt($('#about-hover').css('margin-top')) * pxRatioH)];
-        marker2 = [parseInt(parseInt($('#ear-hover').css('margin-left')) * pxRatioW), parseInt(parseInt($('#ear-hover').css('margin-top')) * pxRatioH)];
 
         var minGain = 0,
             maxGain = 1;
 
-        mouseXPosition = mouseXPosition + $('#page-contain').scrollLeft() + 1;
+        mouseXPosition = mouseXPosition + $('.img-contain').scrollLeft() + 1;
         mouseYPosition = mouseYPosition + $('#page-contain').scrollTop() - 30;
 
         if (mouseYPosition > (markerArr[1] - 400) && mouseYPosition < (markerArr[1] + 400)) {
@@ -549,9 +548,57 @@ $(document).ready(function() {
         if (toggle) {
             average = average / 10;
         }
-
         return average;
     };
+
+    document.body.addEventListener('mousedown', function(e) {
+        mousedown = true;
+        let tempX = e.pageX;
+        let tempY = e.pageY;
+        let scrollX = $('.img-contain').scrollLeft();
+        let scrollY = $('#page-contain').scrollTop();
+        let iX = scrollX + tempX - 40;
+        let iY = scrollY + tempY - 40;
+        var imgX = Math.ceil(iX / 75) * 75;
+        var imgY = Math.ceil(iY / 75) * 75;
+
+        let maskCoor = {
+            topRx: imgX + 50,
+            topRy: imgY + 50,
+            midTRx: imgX,
+            midTRy: imgY + 100,
+            midBRx: imgX - 50,
+            midBRy: imgY + 50,
+        };
+
+        let thing = imgX + ' ' + imgY + ',' + maskCoor.topRx + ' ' + maskCoor.topRy + ',' + maskCoor.midTRx + ' ' + maskCoor.midTRy + ',' + maskCoor.midBRx + ' ' + maskCoor.midBRy;
+
+        function makeSVG(tag, attrs) {
+            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            for (var k in attrs)
+                el.setAttribute(k, attrs[k]);
+            return el;
+        }
+
+        if (!toggle) {
+            var shape = makeSVG('polygon', {
+                points: thing
+            });
+            document.getElementById('image').appendChild(shape);
+        }
+    });
+
+    document.body.addEventListener('mouseup', function() {
+        mousedown = false;
+    });
+
+    document.body.addEventListener('mousemove', function(e) {
+
+        if (isHover) {
+            gainArr[0].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker1), context.currentTime, .5);
+            gainArr[1].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker2), context.currentTime, .5);
+        }
+    });
 
     let returnScreen = () => {
         removeBackgroundBlooms();
@@ -589,6 +636,8 @@ $(document).ready(function() {
         $('.inner-block').toggleClass('opacity');
         $('.imgs').toggleClass('scale-imgs');
         $('.middle-block').toggleClass('top-index');
+        $('.vis-text').toggleClass('vis-text-scale');
+        // $('.visor').toggleClass('visor-scale');
     }
 
     const scrollAmount = (x, y) => {
@@ -719,55 +768,6 @@ $(document).ready(function() {
         switchView();
     });
 
-    document.body.addEventListener('mousedown', function(e) {
-        mousedown = true;
-        let tempX = e.pageX;
-        let tempY = e.pageY;
-        let scrollX = $('#page-contain').scrollLeft();
-        let scrollY = $('#page-contain').scrollTop();
-        let iX = scrollX + tempX - 40;
-        let iY = scrollY + tempY - 40;
-        var imgX = Math.ceil(iX / 75) * 75;
-        var imgY = Math.ceil(iY / 75) * 75;
-
-        let maskCoor = {
-            topRx: imgX + 50,
-            topRy: imgY + 50,
-            midTRx: imgX,
-            midTRy: imgY + 100,
-            midBRx: imgX - 50,
-            midBRy: imgY + 50,
-        };
-
-        let thing = imgX + ' ' + imgY + ',' + maskCoor.topRx + ' ' + maskCoor.topRy + ',' + maskCoor.midTRx + ' ' + maskCoor.midTRy + ',' + maskCoor.midBRx + ' ' + maskCoor.midBRy;
-
-        function makeSVG(tag, attrs) {
-            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
-            for (var k in attrs)
-                el.setAttribute(k, attrs[k]);
-            return el;
-        }
-
-        if (!toggle) {
-            var shape = makeSVG('polygon', {
-                points: thing
-            });
-            document.getElementById('image').appendChild(shape);
-        }
-    });
-
-    document.body.addEventListener('mouseup', function() {
-        mousedown = false;
-    });
-
-    document.body.addEventListener('mousemove', function(e) {
-
-        if (isHover) {
-            gainArr[0].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker1), context.currentTime, .5);
-            gainArr[1].gain.setTargetAtTime(calculateGain(e.clientY, e.clientX, marker2), context.currentTime, .5);
-        }
-    });
-
     let countDown = 10;
 
     let direction = "";
@@ -799,39 +799,21 @@ $(document).ready(function() {
                 setTimeout(()=>{
                     $(this).children().css({'transition': 'all .5s ease', 'height' : '30px'});
                     setTimeout(()=>{
-                        $(this).next().children().css({'transition': 'all 0s ease', 'opacity': '1'});
+                        // $(this).next().children().css({'transition': 'all 0s ease', 'opacity': '1'});
                         setTimeout(()=>{
-                            $(this).next().children().css({'transition': 'all .5s ease', 'height' : '30px'});
+                            // $(this).next().children().css({'transition': 'all .5s ease', 'height' : '30px'});
                         }, 500);
                     }, 200);
                 }, 10);
-                // $(this).children().css({'transition': 'all .5s ease', 'height' : '0px'});
-                // setTimeout(()=>{
-                //     $(this).children().css({'opacity': '0'});
-                //     $(this).next().children().css({'transition': 'all .5s ease', 'height' : '0px'});
-                //     setTimeout(()=>{
-                //         $(this).next().children().css({'opacity': '0'});
-                //     }, 500);
-                // }, 200);
             } else {
                 $(this).children().css({'transition': 'all .5s ease', 'height' : '0px'});
                 setTimeout(()=>{
                     $(this).children().css({'opacity': '0'});
-                    $(this).prev().children().css({'transition': 'all .5s ease', 'height' : '0px'});
+                    // $(this).prev().children().css({'transition': 'all .5s ease', 'height' : '0px'});
                     setTimeout(()=>{
-                        $(this).prev().children().css({'opacity': '0'});
+                        // $(this).prev().children().css({'opacity': '0'});
                     }, 500);
                 }, 200);
-                // $(this).children().css({'transition': 'all 0s ease', 'opacity': '1'});
-                // setTimeout(()=>{
-                //     $(this).children().css({'transition': 'all .5s ease', 'height' : '30px'});
-                //     setTimeout(()=>{
-                //         $(this).prev().children().css({'transition': 'all 0s ease', 'opacity': '1'});
-                //         setTimeout(()=>{
-                //             $(this).prev().children().css({'transition': 'all .5s ease', 'height' : '30px'});
-                //         }, 500);
-                //     }, 200);
-                // }, 10);
             }
         }
     })
